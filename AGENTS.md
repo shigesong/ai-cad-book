@@ -37,6 +37,13 @@ figures, and drawings.
   `quarto render chapters/<file>.qmd`.
 - Output goes to `_book/`; never edit it as source. Quarto 1.10.19 and Typst
   are installed.
+- The book is published at <https://shigesong.github.io/cad-for-carpentry/>.
+  This repo is private and a free GitHub account cannot serve Pages from a
+  private repo, so the site is built from a second public repo,
+  `shigesong/cad-for-carpentry`, containing only rendered HTML. Run
+  `scripts/publish-site.sh` (renders HTML into `_site/`, force-syncs that into
+  a clone of the pages repo, commits, pushes) after committing source changes.
+  Do not add the pages repo as a submodule or commit `_site/`.
 - There is no package manifest, test suite, linter, or CI. Do not add a
   Node/Python/R toolchain or invent build steps for the book.
 

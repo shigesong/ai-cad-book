@@ -1,5 +1,6 @@
 _book/
 _book-typst/
+_site/
 .quarto/
 
 /.quarto/

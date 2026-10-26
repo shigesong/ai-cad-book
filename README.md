@@ -4,6 +4,10 @@ Source for *CAD for Carpentry: Practical SolidCraft and FreeCAD models for
 fences, decks, and sheds* — a Quarto book that pairs prose with reproducible
 parametric models.
 
+**Read it at <https://shigesong.github.io/cad-for-carpentry/>** — the site is
+rendered from this repo by `scripts/publish-site.sh`; this source repo stays
+private.
+
 Two tracks: SolidCraft (chapters 1–15) and FreeCAD (chapters 16–24), plus a
 command map, troubleshooting guide, glossary, open-source landscape, and FreeCAD
 setup appendix.
