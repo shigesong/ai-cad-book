@@ -1,0 +1,135 @@
+# From Model to Build
+
+A model becomes useful when someone can build from it. That means a stable
+revision, a cut list, a sequence, and a way to record what actually happened.
+
+## What you will learn
+
+- How to freeze and export a revision.
+- How to turn a BOM into a practical cut list.
+- How to sequence the build so the model survives first contact with the site.
+- How to record as-built changes without losing the design history.
+
+## Freeze a revision
+
+Before printing or ordering material:
+
+1. Finish the model and run the checks from Chapter 8.
+2. Give the revision a name or number.
+3. Export the figures and the BOM.
+4. Save the design file and the command script, if you have one.
+5. Write down the assumptions that are not in the geometry: material species,
+   grade, fasteners, finishes, and code inputs.
+
+A revision that cannot be reproduced is not a revision. Keep the design source
+and the exported documents together.
+
+## Make a cut list
+
+Start from the BOM, then add the information the BOM does not have:
+
+- actual cross-section and length of each part;
+- stock length available from the supplier;
+- kerf and end-trim allowance;
+- waste factor for defects and mistakes;
+- grouping by stock size;
+- a part ID that appears on the figure.
+
+A simple cut list:
+
+| ID | Part | Actual size (mm) | Length (mm) | Qty | Stock |
+|----|------|------------------|-------------|-----|-------|
+| P1 | Post | 90 × 90 | 2000 | 3 | 4 × 4 |
+| R1 | Rail | 45 × 140 | 2310 | 6 | 2 × 6 |
+| K1 | Picket | 19 × 140 | 1700 | 42 | 1 × 6 |
+| G1 | Gate stile | 90 × 90 | 1800 | 2 | 4 × 4 |
+
+The lengths and quantities are examples. Recalculate them from your model and
+your actual stock.
+
+## Sequence the build
+
+The model can help you find the order:
+
+1. Set out the site and check the diagonals.
+2. Set posts and footings; let them cure.
+3. Install beams and joists, or rails and braces.
+4. Check square and level before adding the skin.
+5. Install decking, pickets, or siding.
+6. Hang the gate or door.
+7. Install the guard, trim, and hardware.
+
+The critical step is usually the one that locks the geometry: the first square
+frame, the posts, or the floor platform. Check it before you cover it up.
+
+## Check on site, not just on screen
+
+Bring:
+
+- the key dimensions, not every dimension;
+- a diagonal or two;
+- the datum description;
+- the cut list;
+- a pencil and a way to record changes.
+
+Measure the built geometry at the same points you used in the model. If the
+site disagrees, update the model; do not silently adjust the cut list and leave
+the design wrong.
+
+## Record as-built changes
+
+For every change:
+
+- note what changed and why;
+- update the parameter or feature that caused it;
+- regenerate the affected figures and BOM;
+- keep the old revision if material was already ordered;
+- note the date and the person who made the change.
+
+A short change log is enough:
+
+| Date | Change | Reason | Affected parts |
+|------|--------|--------|----------------|
+| 2026-10-25 | Post spacing 2400 → 2350 | Site obstruction | Posts, rails, pickets |
+
+## Build along: package the fence project
+
+1. Freeze the fence revision.
+2. Export the plan, elevation, section, and gate elevation.
+3. Export the BOM.
+4. Build the cut list with a 10% waste allowance.
+5. Write the build sequence.
+6. Add a one-page site checklist with the datum and the critical dimensions.
+7. Save the package next to the design.
+
+::: {.callout-note}
+**TODO:** Add the finished package as an example, including the cut list, the
+figure set, and the site checklist.
+:::
+
+## Checks
+
+- Every figure and BOM comes from the same saved revision.
+- The cut list accounts for kerf, defects, and waste.
+- The build sequence names the geometry-locking step.
+- Critical dimensions are easy to find on site.
+- Changes are recorded, not just made.
+
+## Exercises
+
+1. Build a cut list for the shed, grouped by stock size.
+2. Write a 10-step build sequence for the deck.
+3. Take one model and produce a one-page site checklist. What did you leave
+   out, and why?
+4. Simulate a site change: move a post 50 mm. Update the model, the BOM, and
+   the cut list. Which figures change?
+
+## Where to go next
+
+- Continue to Part IV to rebuild the same projects in FreeCAD and add TechDraw
+  drawings and a BIM/IFC shed.
+- Revisit the chapters that felt uncertain and build the exercises.
+- Add your own project: a planter, a workbench, a pergola, a chicken coop.
+- Improve the book's figures and examples as you learn.
+- Keep the command map, troubleshooting, and setup appendices current with the
+  versions you actually use.

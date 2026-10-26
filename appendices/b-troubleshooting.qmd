@@ -1,0 +1,92 @@
+# Troubleshooting
+
+Most problems in this book are one of five things: the app or RPC server is not
+running, the sketch is not closed, the sketch is over-constrained, the units are
+not what you think, or two parts are occupying the same space. The tables below
+separate SolidCraft-specific symptoms from FreeCAD ones.
+
+## First checks
+
+- Is the design the one you think it is? Read the file name and the timeline or
+  feature tree.
+- Are the display units millimetres?
+- Is the sketch finished, or are you still editing it?
+- Is the feature you are editing suppressed or rolled back?
+- Did a previous operation leave a warning earlier in the history?
+- For FreeCAD MCP, is FreeCAD open with the RPC server on port 9875?
+
+## Common problems
+
+| Symptom | Likely cause | What to do |
+|---------|--------------|------------|
+| "No SolidCraft app is listening" | The app is not running | Start `solidcraft --control 27878`, then retry |
+| Extrude refuses a profile | Open contour or self-intersection | Find loose ends; close the loop; simplify the profile |
+| Dimension will not solve | Over-constrained sketch | Remove a redundant dimension or make it driven |
+| Shape collapses when dragged | Under-constrained sketch | Add horizontal, vertical, coincident, or dimensional constraints |
+| Part is ten times too big | Unit conversion was applied to geometry | Check `document.units`; do not scale the model to fix a display |
+| Two parts overlap | Nominal sizes or missing clearance | Run a clearance/interference check; use actual dimensions |
+| Notch is on the wrong face | Sketch attached to the wrong face or mirrored | Check the plane normal and the face selection |
+| Body count is too high | Booleans left slivers or separate pieces | Inspect bodies; combine or remove the slivers |
+| Cut leaves a paper-thin wall | Profile too close to a face | Move the cut or change the dimension |
+| Gate binds | No clearance in the closed or open position | Check clearance through the full swing |
+| BOM count is wrong | Independent bodies instead of component occurrences | Use components and check the definition count |
+| Export is empty or wrong | Wrong body selection or format | Re-run the export with explicit bodies and a supported format |
+| Assistant reports "still running" | A long operation is still in progress | Do not resend; wait for the pending result |
+
+## FreeCAD and FreeCAD MCP
+
+| Symptom | Likely cause | What to do |
+|---------|--------------|------------|
+| MCP Addon workbench is missing | Addon in the wrong directory or one level too deep | Check for `Mod/FreeCADMCP/InitGui.py`; read Report View |
+| RPC server will not start | Port 9875 is in use | Stop the other process or change the port |
+| OpenCode connects but FreeCAD tools fail | FreeCAD is open but the RPC server is stopped | Start **Start RPC Server** in the MCP Addon workbench |
+| Version mismatch warning | Addon and `freecad-mcp` package differ | Update both and restart FreeCAD |
+| Pad or Pocket fails | Sketch is open, outside a Body, or self-intersecting | Check the sketch and the Body |
+| Sketch will not solve | Over-constrained or redundant constraints | Remove a constraint or dimension |
+| Feature breaks after an edit | A face or edge reference moved | Reattach to a datum plane or stable sketch |
+| TechDraw page is blank | Source hidden, wrong scale, or not recomputed | Recompute and check the view source |
+| IFC export misses objects | Objects are not BIM objects or are outside the project | Use the BIM workbench and check export scope |
+| `uvx freecad-mcp` fails | `uv` missing or Python older than 3.12 | Install or update `uv` |
+
+## Sketch repair recipe
+
+1. Run the loose-ends check.
+2. Delete construction geometry that is not needed.
+3. Remove redundant dimensions before adding new constraints.
+4. Add constraints in this order: coincident, horizontal/vertical, parallel/
+   perpendicular, equal, tangent, dimensions.
+5. If the sketch still will not solve, redraw the smallest broken region rather
+   than starting over.
+
+## Model repair recipe
+
+1. Read the history from the first warning: the SolidCraft timeline or the
+   FreeCAD feature tree, not the last feature you touched.
+2. Roll back to the last known-good feature.
+3. Fix the sketch or dimension that caused the failure.
+4. Recompute forward one feature at a time.
+5. Re-run the checks: bounding box, body count, clearance, interference.
+
+## When to start over
+
+Start a part again when:
+
+- the timeline is full of suppressed features and workarounds;
+- the datum is wrong and every dimension depends on it;
+- a boolean has produced a body that cannot be repaired cleanly.
+
+Starting over is cheaper than maintaining a fragile model. Keep the old file
+until the new one passes the same checks.
+
+## Getting help
+
+Include in a question:
+
+- what you were trying to do;
+- the exact step that failed;
+- the error message;
+- the SolidCraft or FreeCAD version;
+- a screenshot of the timeline/feature tree and the sketch or body;
+- the smallest design file that reproduces the problem.
+
+A reproducible file is worth more than a paragraph of description.

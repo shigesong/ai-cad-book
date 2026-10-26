@@ -1,0 +1,105 @@
+# Why Model It First? {.unnumbered}
+
+A fence, a deck, and a shed are forgiving projects until they are not. A post
+set 50 mm out of line, a joist that misses its footing, or a gate that swings
+into a downspout can turn a weekend into a second trip to the lumber yard. CAD
+is a rehearsal: you build the thing once on screen, find the collisions and
+awkward dimensions, and then build it for real with a cut list in hand.
+
+This book is a hands-on introduction to [SolidCraft](https://solidcraft.app)
+and [FreeCAD](https://www.freecad.org) for carpentry and exterior construction.
+It assumes you know, or want to learn, how a fence, deck, or shed goes
+together. It does not assume any CAD experience.
+
+::: {.callout-note}
+## This book is a working skeleton
+
+The chapter files contain outlines and learning goals rather than finished
+prose, with `TODO` markers where figures and exact commands still need to be
+added. Work through a track in order. As you learn a technique, replace the
+outline with your own explanation, screenshots, and a tested model. The
+structure is deliberately stable so the material can grow without being
+reorganized every time.
+:::
+
+## What you will build
+
+- **A fence panel and gate:** posts, rails, pickets, a braced gate frame, and
+  the clearances that keep a gate swinging.
+- **A small deck:** posts, beams, joists, decking, guard, and stairs, modeled
+  as a set of repeated parts.
+- **A gable shed:** a floor platform, stud walls, openings, and a simple roof,
+  with enough detail to produce a cut list.
+
+You build each project twice: once in SolidCraft (Parts I–III) and once in
+FreeCAD (Part IV). The FreeCAD shed also adds a BIM model and IFC export.
+
+## How to use this book
+
+Start with the historical and practical overview in the Introduction. Then pick
+a track:
+
+- **SolidCraft track:** Parts I–III. It builds the mental model, the
+  carpentry-specific habits, and the three projects.
+- **FreeCAD track:** Part IV. It teaches Sketcher, Part Design, Spreadsheets,
+  TechDraw, BIM/IFC, and the same three projects.
+- **Full course:** read both. The concepts transfer; the workflows differ enough
+  to be worth comparing.
+
+Part I is useful before either track because it covers units, datums, sketches,
+and parameters. Part II adds components, joinery, clearances, takeoffs, and the
+OpenCode workflow. Part III applies them in SolidCraft. Part IV does the same
+work in FreeCAD and ends with a chapter on choosing and combining the tools.
+
+Most chapters follow the same shape:
+
+- **What you will learn** — the small number of ideas to take away.
+- **Build along** — one model to make while reading.
+- **Checks** — the measurements that tell you the model is right.
+- **Exercises** — variations worth trying before moving on.
+
+You can follow in each tool's interface or drive it with an AI assistant
+connected through OpenCode. The concepts are the same; the commands, menus, and
+workbench names differ.
+
+## Conventions used in this book
+
+- **Units are millimetres.** Wood dimensions, hardware, and site measurements
+  are all easier to keep consistent in one unit. Both tools can display other
+  units, but the models here use mm.
+- **Z is up.** The XY plane is the plan view, XZ and YZ are elevations. Ground
+  level is normally Z = 0 unless a chapter says otherwise.
+- **Model actual dimensions.** A "2 × 4" is not 50 × 100 mm. Model the wood you
+  can actually buy, and write down the nominal name separately.
+- **Pick a datum and keep it.** Put the origin at a sensible corner, face, or
+  ground line, and document it. Most mysterious dimension errors are datum
+  errors.
+- **Model the fit, not the grain.** CAD is good at clearance, spacing, and
+  collisions. It cannot tell you whether a board will cup or a knot will weaken
+  a joint.
+
+## A safety note
+
+::: {.callout-warning}
+This book teaches modeling, not structural engineering. Spans, footing sizes,
+guard heights, wind uplift, snow loads, permits, and attachment details are
+governed by local building codes and site conditions. Have a qualified person
+review anything structural, and follow the hardware manufacturer's instructions.
+No model in this book replaces that review.
+:::
+
+## The book at a glance
+
+| Part | Chapters | Outcome |
+|------|----------|---------|
+| Introduction | — | Where CAD came from and why tool choice matters |
+| Foundations | 1–5 | Sketch, extrude, and parameterize a simple part in SolidCraft |
+| SolidCraft modeling | 6–10 | Repeat parts, model joinery, check fit, produce figures and a BOM, and drive SolidCraft with OpenCode |
+| SolidCraft projects | 11–15 | Model a fence, a deck, a shed, and its site |
+| FreeCAD | 16–24 | Part Design, spreadsheets, TechDraw, BIM/IFC, the same three projects, FreeCAD with OpenCode, and tool choice |
+| Appendices | A–E | Command map, troubleshooting, glossary, open-source landscape, FreeCAD setup |
+
+Ready? Start with the [Introduction](chapters/00-introduction.qmd), then go to
+[A Tour of SolidCraft](chapters/01-solidcraft-tour.qmd) for the SolidCraft
+track, or [FreeCAD for SolidCraft Users](chapters/16-freecad-tour.qmd) for the
+FreeCAD track.

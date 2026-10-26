@@ -1,0 +1,128 @@
+# Sketching a Carpentry Profile
+
+A sketch is a 2D profile plus the rules that hold it together. The goal is not
+to draw a pretty shape; it is to draw a shape that rebuilds correctly when a
+dimension changes.
+
+## What you will learn
+
+- How sketch planes map to plan and elevation.
+- The geometry tools used for most carpentry parts.
+- How constraints and dimensions control a profile.
+- How to tell when a sketch is ready to extrude.
+
+## The sketch is a profile
+
+Most carpentry solids start as one closed loop:
+
+- a post cross-section (square or rectangular);
+- a rail or joist section (rectangle);
+- a picket (rectangle, optionally with a shaped top);
+- a notch or cut-out (a closed profile that removes material);
+- a roof profile (a triangle or a pair of sloped lines).
+
+Open profiles can be useful for reference geometry, but they cannot become a
+solid until they enclose an area.
+
+## Planes in a Z-up world
+
+SolidCraft uses Z as up. The three standard sketch planes are:
+
+| Plane | What it shows | Typical carpentry use |
+|-------|---------------|-----------------------|
+| XY | Plan view | post layout, deck framing, fence run |
+| XZ | Front elevation | wall outline, gate frame, roof profile |
+| YZ | Side elevation | shed end wall, stair stringer |
+
+You can also sketch on a face of an existing body. That is how you add a notch
+to a post or a bolt hole to a rail: attach the new sketch to the face where the
+feature belongs.
+
+## Geometry you will actually use
+
+- **Line** for open outlines, diagonals, and custom profiles.
+- **Rectangle** for posts, rails, joists, and pickets.
+- **Circle** for bolts, washers, and round posts.
+- **Arc** for arched openings and decorative picket tops.
+- **Construction geometry** for centrelines and reference distances that
+  should not become part of the profile.
+
+Resist the urge to model every chamfer, roundover, and decorative curve. Model
+the features that affect fit, assembly, or the cut list. A little cosmetic
+detail is useful for communication; a fully sculpted board is usually wasted
+effort.
+
+## Constraints are the rules
+
+Constraints tell the solver what must remain true:
+
+- horizontal or vertical;
+- coincident (two points together);
+- parallel or perpendicular;
+- equal length or radius;
+- tangent;
+- midpoint;
+- symmetry;
+- fixed.
+
+A sketch with no constraints can still look right and behave badly: drag one
+line and the shape collapses. Constraints are what make the profile survive an
+edit.
+
+## Dimensions drive the sketch
+
+A dimension is a number with a name and a value. Driving dimensions control the
+geometry; driven (reference) dimensions report it.
+
+Dimension the things that matter:
+
+- overall width and height;
+- the size of a notch or mortise;
+- the spacing between repeated features;
+- the thickness of a rail or picket.
+
+Do not dimension the same distance twice. That is the usual cause of an
+over-constrained sketch: two dimensions and a constraint all try to control the
+same degree of freedom. If the solver refuses a dimension, remove a redundant
+one or convert it to a driven dimension.
+
+## Fully constrained is a checkpoint, not a goal
+
+A fully constrained sketch has zero degrees of freedom. That is a good
+checkpoint before extruding, but it is not a moral requirement. A sketch can be
+under-constrained and still produce the right part if the missing freedom does
+not matter. What matters is that the dimensions you care about cannot drift.
+
+## Build along: a post section
+
+1. Create a sketch on XY.
+2. Draw a rectangle from `(0, 0)` to `(90, 90)`.
+3. Constrain the bottom edge horizontal and the left edge vertical.
+4. Dimension the width and height to 90 mm.
+5. Confirm the solver reports zero degrees of freedom and one closed profile.
+6. Finish the sketch.
+
+::: {.callout-note}
+**TODO:** Add a screenshot of the constrained sketch and a short note on how
+your version displays degrees of freedom and profile status.
+:::
+
+## Checks
+
+- One closed profile.
+- No loose line ends.
+- Width and height both driven by dimensions, not by accidental snapping.
+- The origin is at the corner you intend to use as the datum.
+
+## Exercises
+
+1. Draw a 45 × 140 mm rail section with the long side vertical.
+2. Draw a 19 × 140 mm picket with a 45° chamfer on the top two corners.
+3. Draw a 90 × 90 mm post with a 45 × 45 mm notch in one corner. Keep the
+   notch dimensions parametric.
+4. Deliberately over-constrain a rectangle, then repair it without redrawing.
+
+## Next
+
+A closed sketch is only a profile. The next chapter turns profiles into boards,
+cuts, and holes.

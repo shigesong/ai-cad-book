@@ -1,0 +1,124 @@
+# Figures, Sections, and Takeoffs
+
+A model that only lives on screen is a private sketch. A model that produces a
+clear figure, a section, and a material list is a working document.
+
+## What you will learn
+
+- How to choose views that explain a part.
+- How to use sections and appearance to show what is hidden.
+- How to export geometry and a bill of materials.
+- How to turn a BOM into a cut list without pretending it is automatic.
+
+## Choose the view that answers the question
+
+Most parts need three figures:
+
+- **Overall view** — isometric, for orientation.
+- **Elevation** — front, side, or both, for heights and spacing.
+- **Section or detail** — for the joint that cannot be seen from outside.
+
+A fence panel needs a plan (post layout), an elevation (heights and picket
+spacing), and a section (rail-to-post connection). A deck needs a plan (joists
+and decking), an elevation (height above grade), and a stair section. A shed
+needs a floor plan, wall elevations, and a roof section.
+
+Save named views in the design so the figures can be regenerated. A view name
+such as `fence-elevation` is more useful than remembering a camera position.
+
+## Sections and appearance
+
+A section cuts away material to show the inside. Use it when the interesting
+geometry is hidden:
+
+- a tenon inside a mortise;
+- a bolt through a built-up beam;
+- a joist hanger or a notch;
+- a roof-to-wall connection.
+
+Appearance controls help too. Making an outer board semi-transparent can show
+the framing behind it without cutting the model. Use transparency for
+explanation, not decoration.
+
+## Exports
+
+SolidCraft can export solid bodies to STEP, 3MF, STL, or OBJ, and can export a
+view to DXF. For carpentry:
+
+- **STEP** is the useful exchange format if another CAD tool needs the model.
+- **STL/3MF** are for printing or visualization, not for dimensional shop
+  drawings.
+- **DXF** is useful when a profile or view needs to become a template or a CNC
+  path.
+- **PNG** is the right format for this book.
+
+Do not export a mesh and then measure it as if it were exact. The mesh is a
+display artifact; the solid is the source of truth.
+
+## The BOM is not a cut list
+
+A bill of materials tells you how many of each part the design contains. A cut
+list tells you what to cut from what stock. The difference matters:
+
+- the BOM counts parts;
+- the cut list groups parts by stock size and length;
+- the cut list includes kerf, defects, and waste;
+- the cut list may combine parts that can come from one board.
+
+A useful workflow:
+
+1. Export the BOM.
+2. Group parts by actual cross-section and length.
+3. Add a waste allowance for the material and the supplier's quality.
+4. Assign parts to stock boards.
+5. Label each part with a cut-list ID and mark it on the figure.
+
+## Build along: a fence panel figure set
+
+1. Open the fence panel from Chapter 11, or use the gate from Chapter 7 if you
+   are working out of order.
+2. Save an isometric view as `fence-iso`.
+3. Save a front elevation as `fence-elevation`.
+4. Save a plan view as `fence-plan`.
+5. Cut a horizontal section through the rails and save `fence-section`.
+6. Export the BOM as CSV.
+7. Render the four views at the same width and put them in `images/`.
+
+::: {.callout-note}
+**TODO:** Add the figure captions, the BOM CSV, and a first cut list. Note which
+dimensions are missing from the BOM and have to be measured separately.
+:::
+
+## Publishing figures in this book
+
+Keep the source design in `designs/` and the final image in `images/`. In a
+chapter, use a normal Markdown image with a caption:
+
+```markdown
+![Fence panel: isometric view](../images/11-fence-panel-iso.png){#fig-fence-iso}
+```
+
+Refer to it as `@fig-fence-iso` in the text. Regenerate the image when the
+design changes; do not edit the PNG by hand.
+
+## Checks
+
+- The figure has a scale or a dimension note. A screenshot without dimensions
+  is a picture, not a drawing.
+- Hidden parts are shown by section or transparency, not guessed at.
+- The BOM count matches the visible parts.
+- The cut list accounts for kerf and waste.
+- Every figure can be traced back to a saved design and view.
+
+## Exercises
+
+1. Make a three-view figure set for the notched post from Chapter 4.
+2. Cut a section through a half-lap and annotate the lap depth.
+3. Export a BOM for the gate assembly. Group the parts by stock size.
+4. Build a cut list for a 2400 mm fence panel, including a 10% waste
+   allowance. Compare it with the BOM.
+
+## Next
+
+You have the full loop: model, repeat, join, check, and document. Part III uses
+it on a fence, a deck, and a shed.

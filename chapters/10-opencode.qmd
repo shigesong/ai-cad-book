@@ -1,0 +1,337 @@
+# Driving SolidCraft with OpenCode
+
+SolidCraft's command set is small enough to learn, but large enough that you
+will not remember every id. OpenCode closes that gap. You describe the part in
+plain language, and the agent translates it into SolidCraft commands, runs them,
+measures the result, and saves the design.
+
+The interesting part is not that an AI can draw a box. It is that the whole
+loop—model, check, document—can run from one conversation and still leave a
+reproducible design file behind.
+
+This chapter assumes OpenCode V2. The MCP configuration shape differs in V1.
+
+## What you will learn
+
+- How OpenCode, the SolidCraft MCP server, and the SolidCraft app fit together.
+- How to install and configure the connection once.
+- How to write a modeling brief that produces usable geometry.
+- How to review an AI-built model instead of trusting it.
+- How to save the session as a design, a script, and a figure.
+
+## The four pieces
+
+```text
+OpenCode  --MCP (stdio)-->  solidcraft-cli mcp  --TCP 27878-->  SolidCraft app
+```
+
+- **SolidCraft** owns the design, the modeling kernel, and the viewport.
+- **`solidcraft-cli mcp`** is the bridge. It exposes SolidCraft commands as MCP
+  tools. OpenCode starts this process for you; you do not run it in a second
+  terminal.
+- **OpenCode** is the agent. It chooses tools, runs them, reads the results,
+  and talks to you.
+- **Your project folder** holds the design files, figures, and notes.
+
+MCP (Model Context Protocol) is just the wire protocol between the agent and
+the bridge. The SolidCraft side is local. The model may be local or remote,
+depending on the provider you connect to OpenCode.
+
+## Install OpenCode
+
+On Linux or macOS, the current install command is:
+
+```bash
+curl -fsSL https://opencode.ai/v2/install | bash
+```
+
+Package-manager alternatives and desktop builds are listed at
+<https://opencode.ai/v2/docs/>. Check the installation:
+
+```bash
+opencode --version
+```
+
+Start OpenCode from the project directory, not from your home directory:
+
+```bash
+cd /path/to/your/cad-project
+opencode
+```
+
+Inside the TUI, `/connect` chooses a model provider. Use a model with reliable
+tool calling; a model that can write prose but ignores tools will be frustrating
+here.
+
+## Start SolidCraft
+
+Open the app with the control port that the MCP bridge expects:
+
+```bash
+solidcraft --control 27878
+```
+
+Leave it running while you work. The app can start with an empty design or open
+an existing `.solidcraft` file.
+
+::: {.callout-warning}
+`opencode mcp list` can say `connected` while the SolidCraft app is closed.
+That only means OpenCode reached the MCP bridge, not that the modeling kernel is
+available. The first modeling tool call will fail with "no SolidCraft app is
+listening" until you start the app.
+:::
+
+## Connect the MCP server
+
+From a shell, add the server for every project:
+
+```bash
+opencode mcp add solidcraft --global -- \
+  solidcraft-cli mcp --connect 127.0.0.1:27878
+```
+
+Omit `--global` to keep it in the current project's configuration. Then check
+the connection:
+
+```bash
+opencode mcp list
+```
+
+You want a line like:
+
+```text
+✓ solidcraft  connected
+```
+
+The global configuration lives at `~/.config/opencode/opencode.json`. The
+equivalent manual configuration is useful when you want to keep the setting in
+a project's `opencode.json`:
+
+```jsonc
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "servers": {
+      "solidcraft": {
+        "type": "local",
+        "command": [
+          "solidcraft-cli",
+          "mcp",
+          "--connect",
+          "127.0.0.1:27878"
+        ]
+      }
+    }
+  }
+}
+```
+
+OpenCode watches its configuration and reloads it after a save. If a change does
+not appear, run `/reload` in the TUI. Use `/mcps` to see the server list and its
+state.
+
+::: {.callout-warning}
+At the time of writing, `solidcraft-cli mcp setup --client opencode` writes the
+older OpenCode V1 shape (`mcp.<name>` with an `enabled` field). OpenCode V2 reads
+`mcp.servers`. Use `opencode mcp add` or the JSON above, and run the SolidCraft
+helper with `--dry-run` first if you want to see what it would write.
+:::
+
+::: {.callout-note}
+OpenCode exposes MCP tools through Code Mode by default, so the agent may call
+`tools.solidcraft.batch(...)` behind the scenes. You do not need to write that
+syntax. Ask in plain language, and ask the agent to show the commands it ran if
+you want to inspect them.
+:::
+
+## Write a modeling brief
+
+A good prompt is a small design brief. It answers the questions a carpenter
+would ask before cutting:
+
+- What are we building, and at what scale?
+- What are the exact dimensions?
+- Where is the datum?
+- Which units and orientation?
+- What should be checked before saving?
+- Where should the result go?
+
+A weak prompt and a useful one:
+
+| Weak | Useful |
+|------|--------|
+| "Make a fence." | "Model one 2.4 m fence bay in mm, Z up, with the datum at the outside face of the first post. Use 90 × 90 posts and two 45 × 140 rails. Ask before inventing a dimension." |
+| "Fix it." | "The gate binds at 90° open. Run a clearance check against the posts, report the minimum gap, and propose a change without editing the design yet." |
+| "Make it look good." | "Render an isometric view at 1200 × 800 with the grid off and save it to `images/11-fence-iso.png`." |
+
+The most important instruction is: **ask before guessing**. Site dimensions,
+hardware sizes, and code requirements are not things an agent should invent.
+
+## Build along: the fence post
+
+Start with the post from Chapter 1. Paste a brief like this:
+
+```text
+Start a new SolidCraft design named "opencode-post".
+Read SolidCraft's bundled solidcraft-modeling skill reference first.
+
+Units: mm. Z is up. Datum: one corner at (0, 0, 0), bottom face at Z = 0.
+Build a 90 x 90 x 2400 mm post. Use one batch.
+
+Then inspect the design and report the bounding box, the body count, and the
+volume. Save it as designs/10-opencode-post.solidcraft.
+Render an isometric screenshot at 1200 x 800 with the grid off to
+images/10-opencode-post-iso.png.
+```
+
+The agent should do roughly this:
+
+1. Create a new design.
+2. Sketch a 90 × 90 rectangle on XY.
+3. Finish the sketch and extrude it 2400 mm.
+4. Inspect and measure the result.
+5. Save the design.
+6. Render the figure.
+
+A correct result has one body, a bounding box of 90 × 90 × 2400 mm, and a volume
+of about 19.44 × 10⁶ mm³.
+
+::: {.callout-note}
+**TODO:** Add a screenshot of the OpenCode session next to the SolidCraft
+window, and a screenshot of the finished post. Redact API keys and personal
+paths.
+:::
+
+Then continue the conversation:
+
+- "Chamfer the top four edges by 5 mm. Use the body topology to find the edges,
+  and do it in one batch."
+- "Add a parameter `post_h` and set it to 2700 mm. Rebuild, measure the height,
+  and tell me which features recomputed."
+- "Export the design's command script to `designs/10-opencode-post.json`, then
+  run it headless with `solidcraft-cli run --results` and report any errors."
+
+Each follow-up is a small, checkable change. That is the habit that makes the
+session reliable.
+
+## The review loop
+
+Never let "it looks right in the viewport" be the end of the session. Review
+every AI-built model with the same loop:
+
+| Step | Ask for | Why |
+|------|---------|-----|
+| Scope | A new design, or an explicit file to open | Avoid overwriting the wrong model |
+| Build | One batch per part | A batch rolls back on error |
+| Inspect | `inspect_design` and `measure` | Check bodies, timeline, and dimensions |
+| Fit | Clearance and interference checks | Catch collisions the picture hides |
+| Save | A path under `designs/` | Make the result reproducible |
+| Document | A screenshot under `images/` | Give the book a figure |
+| Record | A one-line note in the chapter | Remember how the figure was made |
+
+If a check fails, ask for the smallest change that fixes it. Do not ask the agent
+to "clean up the model" unless you have first inspected what is actually wrong.
+
+## Prompt patterns that work
+
+| Goal | Prompt pattern |
+|------|----------------|
+| Build a part | "New design, units mm, Z up, datum at [face/corner]. Build [exact dimensions]. One batch. Inspect and report bounding box, body count, volume." |
+| Change a dimension | "Set `post_h` to 2700 mm. Rebuild. Report the new bounding box and which features recomputed." |
+| Repeat a part | "Place copies of the post component at 0, 2400, and 4800 mm from the datum. Report the occurrence count and the BOM count." |
+| Check a fit | "Run a clearance check between the gate and the posts through the swing arc, with a 10 mm threshold. Report the minimum gap and the closest pair." |
+| Make a figure | "Save an isometric view as `fence-iso`, render it at 1200 × 800 with the grid off, and write it to `images/11-fence-iso.png`." |
+| Understand a failure | "Read the timeline from the first warning. Explain which feature failed and what input caused it. Do not edit yet." |
+| Recover | "Undo the last feature. Show me the timeline before and after, then wait for instructions." |
+
+Notice the pattern: a scope, a measurement, an operation, and a check. The agent
+does the translation; you keep the design intent.
+
+## Make the session reproducible
+
+A chat transcript is not a design file. At the end of a session, keep:
+
+- the `.solidcraft` design;
+- a command script, if the model was built from commands;
+- the final figures;
+- a short note describing the datum and the assumptions.
+
+Extract and verify the script:
+
+```bash
+solidcraft-cli script designs/10-opencode-post.solidcraft \
+  --out designs/10-opencode-post.json
+
+solidcraft-cli run designs/10-opencode-post.json --results
+```
+
+The second command builds the part without the app. If it fails, the design
+depends on something the script did not capture, or the script needs an update.
+
+For automation, `opencode run "..."` submits a prompt without opening the TUI.
+It is useful for regenerating a figure or running a repeatable check. It is not
+a substitute for reviewing the result.
+
+## Failure modes
+
+| Symptom | Likely cause | What to do |
+|---------|--------------|------------|
+| `mcp list` says connected, tools fail | SolidCraft app is not running | Start `solidcraft --control 27878` |
+| Server is missing from `mcp list` | Wrong config shape or wrong project | Add it with `opencode mcp add` (global or project); manual config uses `mcp.servers` |
+| "Tool not found" | The agent session predates the server, or the name is wrong | `/reload`; check `/mcps` and `opencode mcp list` |
+| "Still running" | A long operation is still in progress | Do not resend; wait for the pending result |
+| Dimensions are invented | The brief was vague | Restate units, datum, and "ask before guessing" |
+| The wrong design was changed | The agent used the open design instead of a new one | Ask for `new_design` or an explicit `open` every time |
+| The timeline is a mess | Many tiny moves and edits | Roll back, rebuild the part in one batch, keep the history readable |
+| The context is lost | A long session or a model switch | Start a new session with the brief and the saved file path |
+| Screenshots flood the context | Too many renders | Ask for measurements first; render one final figure |
+| The agent edits unrelated files | Broad shell or file operations | Work in the project folder; review permission prompts and diffs |
+
+An agent can move fast and be confidently wrong. The review loop is the point,
+not an optional extra.
+
+## What to delegate, and what to keep
+
+| Delegate | Keep |
+|----------|------|
+| Translating a brief into commands | Site measurements and existing conditions |
+| Repeating and renaming parts | Structural sizing and code compliance |
+| Measuring, checking, and comparing | Aesthetics and buildability judgement |
+| Rendering figures and exporting BOMs | Final fit, safety, and sign-off |
+| Explaining an error or a timeline | The decision to change the design |
+
+::: {.callout-warning}
+OpenCode can run shell commands and edit files. Use it in a project folder, keep
+designs saved, and review what it is about to do. "The model looks right" is not
+a structural review, a code check, or a substitute for measuring the site.
+:::
+
+## Checks
+
+- The design has one body, a 90 × 90 × 2400 mm bounding box, and the expected
+  volume.
+- The agent reported the same measurements the tool returned.
+- `designs/10-opencode-post.solidcraft` exists and opens again.
+- `designs/10-opencode-post.json` replays headlessly with no errors.
+- `images/10-opencode-post-iso.png` shows the part, not an empty viewport.
+- The timeline reads as a short sequence of modeling steps, not a pile of
+  moves.
+
+## Exercises
+
+1. Build the post from Chapter 1 by hand, then build it again through OpenCode.
+   Compare the timeline, the bounding box, and the volume.
+2. Ask OpenCode to place three posts at 2400 mm centres using component copies.
+   Check the occurrence count and the BOM count yourself.
+3. Ask for a parameter change, then verify it with an independent measurement.
+   Did the agent report the same value the tool returned?
+4. Ask for the command script and run it headless with the app closed. Fix any
+   difference between the design and the script.
+5. Write the brief for the fence panel in Chapter 11 before starting the
+   session. What did the agent have to ask you that the brief did not answer?
+
+## Next
+
+You now have two ways to work: direct modeling and an agent-driven loop. The
+next chapter uses both on a full fence panel, and the projects after that reuse
+the same brief → build → inspect → save pattern.

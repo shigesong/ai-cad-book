@@ -1,0 +1,131 @@
+# Project: A Gable Shed
+
+A shed combines a floor platform, stud walls, openings, and a roof. It is also
+the project where a small modeling decision—where the wall datum sits, how the
+roof meets the wall—shows up in every later dimension.
+
+## Design brief
+
+| Item | Example value |
+|------|---------------|
+| Floor size | 2400 × 3600 mm |
+| Wall height | 2400 mm |
+| Wall framing | 38 × 89 mm studs at 400 mm centres |
+| Roof | gable, 15° pitch, 300 mm overhang |
+| Door | 800 × 2000 mm |
+| Siding | vertical boards or sheet goods |
+
+::: {.callout-warning}
+This is a geometric model, not a engineered building design. Footings, wall
+bracing, roof spans, snow and wind loads, ventilation, and permits depend on
+your site and local code.
+:::
+
+## What you will model
+
+1. A floor platform with rim joists and a deck surface.
+2. Four walls with top and bottom plates, studs, and openings.
+3. A gable roof with a consistent ridge and overhang.
+4. A door and its clearance.
+5. A simple BOM by stock size.
+
+## Step 1: Floor platform
+
+Start with the finished floor at Z = 0. This is usually easier than starting at
+grade, because every wall and door dimension is measured from the floor.
+
+Model:
+
+- skids or footings, simplified;
+- rim joists;
+- floor joists;
+- the deck surface.
+
+Check that the platform is square by measuring diagonals. A 2400 × 3600 mm
+rectangle has a diagonal of about 4327 mm.
+
+## Step 2: Walls
+
+Build one wall as a component, then place four occurrences. Each wall has:
+
+- a bottom plate;
+- a top plate;
+- studs at the chosen spacing;
+- king and jack studs at openings;
+- a header over each opening.
+
+Model the openings as gaps in the framing, not as a solid wall with a door
+painted on. The door and window cut-outs are what make the model useful for the
+cut list.
+
+Pay attention to the corners: two walls meet there, and their studs must not
+occupy the same space. Decide which wall is the through wall and which is the
+butt wall, and keep that convention for the whole building.
+
+## Step 3: Roof
+
+The roof is a pair of planes meeting at a ridge. For a gable roof:
+
+```text
+rise = (span / 2) × tan(pitch)
+```
+
+For a 2400 mm span and a 15° pitch:
+
+```text
+rise = 1200 × tan(15°) ≈ 321 mm
+```
+
+Model the roof with:
+
+- a ridge at the correct height;
+- two sloped planes or rafter members;
+- an overhang at the gable and eaves;
+- a consistent fascia line.
+
+Do not model every shingle. Model the roof surface, the sheathing thickness if
+it affects the section, and the framing that the cut list needs.
+
+## Step 4: Door and openings
+
+The door opening is a clearance problem before it is a carpentry problem. Check:
+
+- rough opening versus door slab size;
+- clearance for the frame and shims;
+- swing clearance inside and outside;
+- headroom at the top;
+- threshold and floor transition.
+
+Model the door as a simple slab or as a frame with a panel. The important thing
+is the opening and its clearance, not the panel profile.
+
+## Step 5: Check the building
+
+- Floor diagonals are equal.
+- Wall heights are consistent at the corners.
+- Door and window openings are in the correct walls.
+- The ridge is centred and the roof planes meet cleanly.
+- The overhang is equal on both gable ends.
+- No stud or rafter passes through a door or window opening.
+- The BOM counts each stock size separately.
+
+## Deliverables
+
+- floor framing plan;
+- wall elevations with opening dimensions;
+- roof plan and section;
+- door detail;
+- BOM and cut list.
+
+## Exercises
+
+1. Add a 600 × 600 mm window to one wall. What changes in the framing?
+2. Change the roof pitch to 20°. Recalculate the ridge height.
+3. Make the shed 3000 mm wide. Which dimensions are now wrong, and which
+   parameters should have prevented that?
+4. Model a lean-to roof instead of a gable. What happens to the wall heights?
+
+## Next
+
+A building does not sit in a vacuum. The next chapter adds the site: slope,
+drainage, clearance, and weather.

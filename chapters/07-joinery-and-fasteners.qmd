@@ -1,0 +1,111 @@
+# Joinery and Fasteners
+
+CAD makes every joint look perfect. Wood does not. This chapter is about
+modeling joints at the level of fit: enough detail to check the geometry, not
+so much that the model becomes a furniture-rendering exercise.
+
+## What you will learn
+
+- How to represent common carpentry joints.
+- How to size clearance holes and pockets.
+- When a fastener should be geometry and when it should be a note.
+- How to check a joint for overlap and clearance.
+
+## Model the fit, not the craft
+
+A joint has three jobs in a model:
+
+1. Reserve the material that must be removed.
+2. Show the assembled relationship between the parts.
+3. Give you a dimension you can transfer to the shop.
+
+It does not need to show every saw mark, glue line, or grain direction. A clean
+notch with the right dimensions is more useful than a sculpted mortise with
+rounded internal corners that no chisel will produce.
+
+## Common joints and how to model them
+
+| Joint | Modeling approach | What to check |
+|-------|-------------------|---------------|
+| Butt joint | Two bodies meet at a face | Faces are coplanar; fastener clearance |
+| Half-lap | Cut half the depth from each member | Lap depth; flush outer faces |
+| Notch | Cut a pocket in one member | Pocket width/length; clearance |
+| Mortise and tenon | Pocket in one member, projecting tenon on the other | Tenon thickness; mortise clearance; haunch |
+| Dado / groove | Cut a channel across a board | Channel width; board thickness |
+| Bolt connection | Clearance hole through both members | Hole diameter; washer face; edge distance |
+
+For a glued joint, model the nominal dimensions. For a joint that must come
+apart, or that will be assembled on a sloped site, add a small clearance. A
+1 mm clearance is a useful default for a part that should slide; use the
+fastener manufacturer's hole size for bolts.
+
+## Fasteners: geometry or note?
+
+Model a fastener as geometry when:
+
+- it passes through a visible face;
+- its head or washer needs a bearing surface;
+- it determines an edge distance or a collision;
+- a client needs to see how the connection works.
+
+Keep it as a note or a BOM line when:
+
+- it is a hidden screw or nail;
+- the exact length depends on site conditions;
+- modeling it would add detail without changing a decision.
+
+Do not model threads for a through-bolt. A clearance cylinder is enough. Do not
+model every screw in a deck; a note such as "two 65 mm screws per board at each
+joist" belongs in the build notes.
+
+## Edge distance and clearance
+
+A bolt too close to the edge of a board will split it. The model can show the
+distance even if the structural rule comes from code or the manufacturer.
+
+Check:
+
+- distance from the hole centre to the edge;
+- washer diameter versus face width;
+- clearance for a wrench or socket;
+- whether two fasteners collide inside the joint;
+- whether a bolt head protrudes into a moving part.
+
+## Build along: a half-lap gate frame
+
+1. Build two 90 × 90 mm gate stiles, 1800 mm long.
+2. Build two 90 × 90 mm rails, sized to fit between the stiles.
+3. At each crossing, cut half the depth from the stile and half from the rail.
+4. Assemble the four parts and check that the outer faces are flush.
+5. Add a diagonal brace and check that it does not protrude through the faces.
+6. Check clearance between the gate and its posts.
+
+::: {.callout-note}
+**TODO:** Add the lap dimensions, screenshots of the joint before and after
+assembly, and a note on the assembly order.
+:::
+
+## Checks
+
+- No unintended overlap between bodies.
+- Lap depth is half the member thickness, unless the design says otherwise.
+- Outer faces are flush after assembly.
+- Bolt holes line up through both members.
+- The gate has clearance to swing through its full arc.
+- The diagonal brace does not create a zero-thickness intersection.
+
+## Exercises
+
+1. Notch a 90 × 90 post for a 45 × 140 rail with 1 mm clearance.
+2. Model a mortise-and-tenon joint at 1:3 thickness ratio. Check the mortise
+   walls are not paper-thin.
+3. Add an M10 clearance hole through a 90 mm post. What hole diameter did you
+   use, and why?
+4. Model a lag-screw connection as a pilot hole plus a washer face. Decide what
+   belongs in the BOM instead of the geometry.
+
+## Next
+
+A joint can look right in one view and be wrong in another. The next chapter is
+about measuring, checking clearances, and catching the errors that screenshots
+hide.

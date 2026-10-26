@@ -1,0 +1,123 @@
+# Project: A Fence Panel and Gate
+
+This is the first full project. It uses every skill from Part II: repeated
+posts, a patterned picket field, a braced gate, and a clearance check. The
+dimensions are an example, not a code-compliant design.
+
+## Design brief
+
+| Item | Example value |
+|------|---------------|
+| Panel height | 1800 mm |
+| Post height above ground | 2000 mm |
+| Bay spacing | 2400 mm post centres |
+| Posts | 90 × 90 mm |
+| Rails | 45 × 140 mm, two per bay |
+| Pickets | 19 × 140 mm, 20 mm gap |
+| Gate | 1000 × 1800 mm |
+| Gate frame | 90 × 90 mm stiles and rails |
+
+::: {.callout-warning}
+A fence is a sail. Post size, footing depth, embedment, and wind resistance
+depend on soil, exposure, and local code. This chapter models the geometry; it
+does not size the structure. Check the structural requirements before building.
+:::
+
+## What you will model
+
+1. A straight run of three posts.
+2. Two rails per bay.
+3. A picket field with even spacing.
+4. A gate frame with a diagonal brace.
+5. The gate in its opening, with swing clearance.
+
+## Step 1: Set the datum and posts
+
+Put the origin at the outside corner of the first post, at ground level. Model
+the post from Z = 0 to Z = 2000. Place the other posts at 2400 mm centres along
+the run.
+
+Use a component for the post so the BOM counts three, not one. Check that the
+post spacing is measured from the same face on each post. Centre-to-centre and
+clear spacing are not interchangeable.
+
+## Step 2: Add the rails
+
+Cut or join two rails per bay, one near the top and one near the bottom. The
+exact heights depend on the picket layout and the look you want. A common
+starting point is a top rail just below the picket top and a bottom rail about
+250–300 mm above grade.
+
+Keep the rails as separate bodies or components. They are separate pieces of
+wood, and the cut list needs to know that.
+
+## Step 3: Lay out the pickets
+
+For a clear span between posts, the number of pickets is:
+
+```text
+n = floor((clear_width + gap) / (picket_width + gap))
+```
+
+With a 2400 mm bay and 90 mm posts, the clear span is 2310 mm. At 140 mm pickets
+and a 20 mm gap:
+
+```text
+n = floor((2310 + 20) / (140 + 20)) = 14
+```
+
+Fourteen pickets use 14 × 140 + 13 × 20 = 2220 mm, leaving 90 mm. You can split
+the remainder at the two ends, widen the gaps slightly, or adjust the bay. Do
+not leave a random 90 mm gap at one end.
+
+Model one picket, then use a pattern or component copies. Check the first and
+last picket positions explicitly; patterns are easy to get one repetition
+wrong.
+
+## Step 4: Build the gate
+
+The gate is a frame, not a solid slab:
+
+- two stiles, 1800 mm long;
+- top and bottom rails sized to fit between them;
+- a diagonal brace from the bottom hinge side to the top latch side;
+- half-lap or mortise-and-tenon joints at the corners;
+- clearance to the posts and to the ground.
+
+Model the gate in the closed position first. Then check it at 90° open. A gate
+that fits when closed can still hit a post, a wall, or a downspout when it
+swings.
+
+Add the hinges and latch as simple clearance volumes or as notes. The exact
+hardware decides the final hole positions; do not guess them into the model
+before you have the hardware in hand.
+
+## Step 5: Check the assembly
+
+- Post spacing is equal at the top and bottom.
+- The picket field is centred in each bay.
+- Gate clearance is adequate through the full swing.
+- The gate diagonals are equal before the brace is added.
+- The brace is in compression when the gate sags, not decoration.
+- The BOM count matches the parts you intend to buy.
+
+## Deliverables
+
+- plan view of the run;
+- front elevation with picket spacing;
+- section through a rail-to-post connection;
+- gate elevation with brace and hardware notes;
+- BOM and a first cut list.
+
+## Exercises
+
+1. Model a bay on a sloped site. How do the post lengths change?
+2. Add a corner post and a return run. Which datum stays fixed?
+3. Make a double gate. Where does the second gate hinge, and what happens to
+   the swing clearance?
+4. Change the picket width to 90 mm. Recalculate the count and the end gaps.
+
+## Next
+
+A deck adds a second direction of framing and a set of stairs. The next chapter
+models the frame, the decking, and the guard as separate systems.

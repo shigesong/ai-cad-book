@@ -1,0 +1,6 @@
+_book/
+_book-typst/
+.quarto/
+
+/.quarto/
+**/*.quarto_ipynb

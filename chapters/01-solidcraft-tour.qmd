@@ -1,0 +1,98 @@
+# A Tour of SolidCraft
+
+SolidCraft is a parametric solid modeler. "Parametric" means the model is built
+from a history of steps and named values, not from a fixed mesh. Change a
+dimension early in the history and the later features rebuild around it. That
+is exactly what you want for carpentry, where a client changes the fence height
+after you have already drawn the gate.
+
+This chapter gives you the smallest useful mental model and one complete part.
+
+## What you will learn
+
+- The three surfaces of the interface: the design browser and timeline, the
+  viewport, and the command tools.
+- The sketch → feature loop.
+- How to save, undo, and inspect a design.
+- How to make and check a fence post.
+
+## The design is a timeline
+
+The browser lists what exists: components, bodies, sketches, planes, and
+parameters. The timeline lists how it was made: sketch, extrude, cut, fillet,
+and so on.
+
+That history is the model. A feature is not a loose chunk of geometry; it is a
+step that can be edited, suppressed, reordered, or rolled back. When you change
+an early sketch, every feature that depends on it recomputes.
+
+::: {.callout-tip}
+If a model starts behaving strangely, read the timeline from top to bottom
+before deleting anything. The error is usually in the first feature that shows
+a warning, not in the last one you touched.
+:::
+
+## Sketch first, then add material
+
+Most carpentry parts follow the same loop:
+
+1. **Choose a plane.** XY is plan, XZ and YZ are elevations.
+2. **Draw a closed profile.** A rectangle, a circle, or a set of connected
+   lines.
+3. **Constrain and dimension it.** Tell the solver what must stay horizontal,
+   parallel, equal, or a specific size.
+4. **Finish the sketch.**
+5. **Add a feature.** Extrude it into a board, cut a notch, or join it to
+   another body.
+6. **Check the result.** Measure it, look at it from another view, and confirm
+   it is still one sensible solid.
+
+This loop is repeated for every part in the book. The projects are just longer
+versions of it.
+
+## Build along: a 90 × 90 × 2400 mm post
+
+This is the "hello world" of carpentry CAD. The numbers are a common nominal
+4 × 4 post, modeled at its actual size.
+
+1. Start a new design and set the display units to millimetres.
+2. Create a sketch on the XY plane.
+3. Draw a rectangle with one corner at `(0, 0)` and the opposite corner at
+   `(90, 90)`.
+4. Add horizontal and vertical constraints if the solver has not already
+   inferred them. Dimension both sides to 90 mm.
+5. Finish the sketch.
+6. Extrude the profile 2400 mm in +Z.
+7. Optionally chamfer the top edges by 5 mm so the post does not arrive on site
+   with a sharp, splintered end.
+8. Save the design as `designs/01-post.solidcraft`.
+
+::: {.callout-note}
+**TODO:** Add screenshots of the sketch, the extrusion, and the finished post,
+plus the exact command sequence used in your version of SolidCraft.
+:::
+
+## Checks
+
+A post is easy to check, which makes it a good first part:
+
+- The design contains one body.
+- Its bounding box is 90 × 90 × 2400 mm.
+- Its volume is about 19,440,000 mm³ before the chamfer.
+- The bottom face sits at Z = 0 and the long axis is vertical.
+
+If the bounding box is 90 × 2400 × 90, you sketched on the wrong plane. If the
+volume is half of what you expect, the profile was not closed.
+
+## Exercises
+
+1. Make a 140 × 140 × 2400 mm post.
+2. Make a 45 × 140 × 2400 mm rail. Which face should sit at Z = 0?
+3. Move the post so its centre, rather than its corner, is at the origin. Which
+   datum would you rather use on a real site?
+
+## Next
+
+A post is only useful if its dimensions match the wood you can buy. The next
+chapter is about units, datums, and the difference between a nominal 2 × 4 and
+the board in your hand.

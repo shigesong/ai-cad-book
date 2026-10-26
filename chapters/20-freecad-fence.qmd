@@ -1,0 +1,136 @@
+# Project: A Fence in FreeCAD
+
+This is the same fence brief as Chapter 11, built with FreeCAD's Part Design,
+Spreadsheet, and TechDraw tools. The point is not to repeat the SolidCraft
+chapter verbatim; it is to see which habits transfer and which change.
+
+## Design brief
+
+| Item | Example value |
+|------|---------------|
+| Panel height | 1800 mm |
+| Post height above ground | 2000 mm |
+| Bay spacing | 2400 mm post centres |
+| Posts | 90 × 90 mm |
+| Rails | 45 × 140 mm, two per bay |
+| Pickets | 19 × 140 mm, 20 mm gap |
+| Gate | 1000 × 1800 mm |
+
+::: {.callout-warning}
+A fence is a sail. Post size, footing depth, embedment, and wind resistance
+depend on soil, exposure, and local code. This chapter models geometry; it does
+not size the structure.
+:::
+
+## What you will model
+
+1. A spreadsheet with the fence parameters.
+2. One Body for the post, one for the rail, one for the picket, and one for each
+   gate member.
+3. Repeated posts and pickets.
+4. A gate frame with a diagonal brace.
+5. A TechDraw sheet with plan, elevation, and section.
+
+## Step 1: Set up the spreadsheet
+
+Create a Spreadsheet with:
+
+| Alias | Value |
+|-------|-------|
+| `post_w` | 90 mm |
+| `post_d` | 90 mm |
+| `post_h` | 2000 mm |
+| `bay_width` | 2400 mm |
+| `rail_w` | 45 mm |
+| `rail_h` | 140 mm |
+| `picket_w` | 140 mm |
+| `picket_gap` | 20 mm |
+
+Use expressions in the sketches and Pad/Pocket lengths. The spreadsheet is the
+single place to change the run.
+
+## Step 2: Build the post
+
+Create a Part Design Body, sketch a 90 × 90 rectangle on XY, and Pad it to
+`post_h`. Put one corner at the origin so the datum is easy to find on site.
+
+Save the post as a separate Body, not as a Pad inside the rail Body. Separate
+pieces of wood belong in separate Bodies.
+
+## Step 3: Build the rails and pickets
+
+Model one rail Body:
+
+- sketch a 45 × 140 rectangle on the appropriate plane;
+- Pad it to the clear span between posts;
+- add a notch or a pocket if the rail seats into the post.
+
+Model one picket Body:
+
+- 19 × 140 profile;
+- Pad to the picket length;
+- add a chamfer or shaped top if the design calls for it.
+
+Use a Draft Array for the separate picket objects, or a Part Design pattern for
+repeated features inside one Body. Drive the count and spacing from the
+spreadsheet where possible. Check the first and last picket explicitly; arrays
+are easy to get one repetition wrong.
+
+## Step 4: Place the run
+
+Place the posts at 0, 2400, and 4800 mm from the datum. Use the Assembly
+workbench (FreeCAD 1.0+) or a Part container with explicit placements. For a
+simple straight run, explicit placement is often easier than a jointed
+assembly.
+
+Check the spacing at the top and bottom of each post. Centre-to-centre and clear
+spacing are not interchangeable.
+
+## Step 5: Build the gate
+
+The gate is a frame:
+
+- two 90 × 90 stiles, 1800 mm long;
+- top and bottom rails between them;
+- a diagonal brace;
+- half-lap or mortise-and-tenon joints;
+- clearance to the posts and the ground.
+
+Model the gate closed, then check it at 90° open. Add hinges and latch as simple
+clearance volumes or notes. The hardware decides the final hole positions.
+
+## Step 6: Make the drawing
+
+Create a TechDraw page with a title block. Add:
+
+- a plan view showing post layout;
+- a front elevation showing heights and picket spacing;
+- a section through the rail-to-post connection;
+- a gate elevation with the brace and hardware notes.
+
+Dimension the overall run, bay spacing, panel height, and gate clearance.
+Export `drawings/20-fence.pdf`.
+
+## Checks
+
+- One Body per separate piece of wood.
+- Post spacing is uniform.
+- Picket count and end gaps are correct.
+- Gate clearance is adequate through the full swing.
+- The spreadsheet drives the dimensions that are likely to change.
+- The TechDraw sheet has the right scale and title block.
+- The model and the drawing agree.
+
+## Exercises
+
+1. Build a bay on a sloped site. Adjust the post heights.
+2. Add a corner post and a return run.
+3. Make a double gate and check the swing.
+4. Change the picket width to 90 mm and recalculate the count.
+5. Compare the FreeCAD feature tree with the SolidCraft timeline. Which is
+   easier to edit for this project?
+
+## Next
+
+The deck adds a second direction of framing and a stair. The FreeCAD workflow is
+the same: spreadsheet, Bodies, arrays, assembly, drawing.

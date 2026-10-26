@@ -1,0 +1,109 @@
+# Components and Repetition
+
+A fence has a lot of repeated parts. A deck has more. If each post, joist, and
+picket is an independent body, a small design change becomes a long afternoon.
+Components and patterns keep one source of truth.
+
+## What you will learn
+
+- The difference between a body, a component, and an occurrence.
+- When to use a pattern and when to use a component copy.
+- How to lay out repeated parts at fixed spacing.
+- How to get a bill of materials from the assembly.
+
+## Bodies, components, and occurrences
+
+A **body** is a solid. A **component** is a definition made of one or more
+bodies, plus the features that make them. An **occurrence** is one placement of
+that definition in the assembly.
+
+The practical difference: ten copies of a post component are ten occurrences of
+one definition. Change the definition, and all ten change. Ten independent post
+bodies are ten separate edits.
+
+Use components when:
+
+- the same part appears more than once;
+- you want a count in the BOM;
+- you may replace the part with a purchased item later;
+- you want to move a whole subassembly as a unit.
+
+Use plain bodies when the part is unique or when you are still exploring the
+shape.
+
+## Patterns vs copies
+
+Both repeat geometry, but they solve different problems.
+
+| Tool | Best for | Trade-off |
+|------|----------|-----------|
+| Rectangular pattern | pickets, balusters, studs, joists in one run | Fast; all copies live in one feature |
+| Component copies | repeated posts, repeated panels, purchased parts | More control; each occurrence can be counted and moved |
+| Mirror | left/right stiles, stringers, brackets | Creates a mirrored definition or body |
+
+A useful rule: if you need to count it, schedule it, or replace it, make it a
+component. If it is a simple array inside one part, a pattern is enough.
+
+## Laying out repeated parts
+
+For a run of parts at equal centres, define:
+
+- the start datum;
+- the on-centre spacing;
+- the count, or the overall length that determines the count.
+
+For example, posts at 2400 mm centres starting at the outside face of the first
+post:
+
+- post 1 at 0 mm;
+- post 2 at 2400 mm;
+- post 3 at 4800 mm.
+
+If the run is 7200 mm and the posts are 90 mm wide, check whether the last post
+lands where the drawing says. The difference between centre-to-centre and
+clear spacing is a common source of a fence that is one bay short.
+
+## The bill of materials
+
+An assembly can produce a bill of materials: part number, description,
+revision, count, and the definition behind each row. Export it as CSV or JSON
+when you need to price or order material.
+
+The BOM is not a cut list. It tells you how many of each part; it does not tell
+you how to cut them from stock, how much waste to allow, or which offcuts to
+reuse. Those are Chapter 9 and Chapter 15 jobs.
+
+## Build along: three fence posts
+
+1. Build one 90 × 90 × 1800 mm post as a component.
+2. Place the first occurrence at the datum.
+3. Copy it to 2400 mm and 4800 mm centres.
+4. Confirm that all three occurrences share one definition.
+5. Add a part number and description to the component.
+6. Generate the BOM and confirm a count of three.
+
+::: {.callout-note}
+**TODO:** Add screenshots of the component browser, the three occurrences, and
+the BOM row. Note how your version distinguishes a definition from a placement.
+:::
+
+## Checks
+
+- Three occurrences, one definition.
+- Spacing is measured from the same datum for every post.
+- The BOM count is three, not one and not six.
+- Moving one occurrence does not move the others.
+- Editing the definition updates all three.
+
+## Exercises
+
+1. Make nine deck joists at 400 mm centres with a rectangular pattern.
+2. Make ten pickets as component copies and confirm the BOM count.
+3. Build a gate as one component, then place two copies for a double gate.
+4. Deliberately edit one occurrence instead of the definition. What happens to
+   the other copies? Which behaviour do you want for this part?
+
+## Next
+
+Repeated parts still have to fit together. The next chapter is about joinery,
+fasteners, and the clearances that decide whether a joint closes on site.

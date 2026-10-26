@@ -1,0 +1,141 @@
+# Project: A Shed in FreeCAD with BIM
+
+The shed is the project where FreeCAD pulls ahead of SolidCraft for building
+work. The BIM workbench can model walls, levels, openings, and a roof as building
+objects, and it can write a native IFC model.
+
+This chapter builds the same 2400 × 3600 mm gable shed as Chapter 13, but at the
+building level rather than as a collection of loose parts.
+
+## Design brief
+
+| Item | Example value |
+|------|---------------|
+| Floor size | 2400 × 3600 mm |
+| Wall height | 2400 mm |
+| Wall framing | 38 × 89 mm studs at 400 mm centres |
+| Roof | gable, 15° pitch, 300 mm overhang |
+| Door | 800 × 2000 mm |
+| Siding | vertical boards or sheet goods |
+
+::: {.callout-warning}
+This is a geometric and data model, not an engineered building design. Footings,
+bracing, roof spans, snow and wind loads, ventilation, and permits depend on your
+site and local code.
+:::
+
+## What you will learn
+
+- How the BIM workbench represents a small building.
+- How to create levels, walls, a floor, openings, and a roof.
+- How to export IFC and make a plan/elevation drawing.
+- Where BIM stops and Part Design detail begins.
+
+## The BIM object model
+
+A BIM model is not just geometry. It carries building semantics:
+
+- **Site** — where the building sits.
+- **Building** — the container for the structure.
+- **Level** — a floor or storey datum.
+- **Wall** — a hosted linear element with thickness, height, and alignment.
+- **Slab** — a floor or roof surface.
+- **Door / Window** — an opening hosted in a wall.
+- **Space** — a room or volume.
+- **Roof** — a roof object, often built from a footprint.
+
+FreeCAD 1.1's BIM workbench works natively with IFC. That means the objects can
+be exported as a real IFC model, not just a mesh with a label.
+
+## Step 1: Create the project structure
+
+1. Open a new document.
+2. Switch to the **BIM** workbench.
+3. Create a BIM project.
+4. Add a site, a building, and at least one level.
+5. Set the level elevation. Put the finished floor at Z = 0.
+
+A clean site/building/level structure makes the IFC export and the drawings much
+easier to understand.
+
+## Step 2: Floor and walls
+
+Create the floor slab at the finished floor level. Then create walls:
+
+- draw the wall baseline in plan;
+- set thickness, height, and alignment;
+- keep the wall height driven by the level where possible;
+- use the same wall type for repeated walls.
+
+For a 2400 × 3600 mm shed, the walls form a rectangle. Decide which walls are
+through walls and which are butt walls at the corners, and keep that convention.
+
+## Step 3: Openings
+
+Add the door and any windows as hosted openings:
+
+- place the door in the correct wall;
+- set the rough opening and the sill/head heights;
+- check the swing clearance inside and outside;
+- add a window with the correct sill height if the design has one.
+
+The door is a clearance problem before it is a carpentry problem. Check the
+opening, the frame, the shims, and the swing.
+
+## Step 4: Roof
+
+Create a gable roof from the wall footprint or from a roof profile. Set:
+
+- the ridge height from the span and pitch;
+- the overhang at the eaves and gables;
+- the roof thickness or rafter depth;
+- the fascia line.
+
+For a 2400 mm span and a 15° pitch, the rise is about 321 mm. Check the ridge and
+the wall plate relationship in section.
+
+## Step 5: IFC and drawings
+
+Export the model as IFC:
+
+```text
+File → Export → IFC
+```
+
+Then open the IFC in a viewer or re-import it into a clean FreeCAD document to
+check that the building structure, levels, walls, and openings survived.
+
+For drawings, use a BIM DrawingView in FreeCAD 1.1 to create a floor plan and an
+elevation, then place them on a TechDraw page. Dimension the overall size, wall
+heights, door opening, and roof pitch.
+
+## Step 6: Detail with Part Design
+
+BIM is good at walls and openings; it is not always the best tool for a
+notched rafter or a custom door frame. Use Part Design for the detail and place
+it in the BIM model as a component or a separate object.
+
+That is the hybrid workflow: BIM for the building, Part Design for the joinery.
+
+## Checks
+
+- Site, building, and level hierarchy is correct.
+- Walls have the intended thickness, height, and alignment.
+- Door and window openings are hosted in the right walls.
+- Roof ridge is centred and the overhang is equal.
+- IFC export contains the expected levels and objects.
+- The TechDraw plan and elevation match the model.
+- No wall or roof member passes through a door or window.
+
+## Exercises
+
+1. Add a 600 × 600 mm window and check the framing.
+2. Change the roof pitch to 20° and recalculate the ridge.
+3. Make the shed 3000 mm wide and update the levels and walls.
+4. Model a lean-to roof instead of a gable.
+5. Export IFC, re-import it, and list what changed.
+
+## Next
+
+You have a FreeCAD BIM model and a drawing set. The next chapter connects
+FreeCAD to OpenCode so an agent can help with the repetitive parts.

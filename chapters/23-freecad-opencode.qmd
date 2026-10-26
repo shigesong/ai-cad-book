@@ -1,0 +1,180 @@
+# Driving FreeCAD with OpenCode
+
+SolidCraft was designed with a command API and an MCP server from the start.
+FreeCAD was not. Its agent workflow is younger and more improvised: a community
+MCP addon connects OpenCode to a running FreeCAD session, and many operations go
+through Python rather than a small, stable command set.
+
+That makes FreeCAD more powerful and less predictable. The review loop matters
+even more.
+
+## What you will learn
+
+- How OpenCode, the FreeCAD MCP addon, and FreeCAD connect.
+- What to ask an agent to do in FreeCAD.
+- How to review a Python-driven FreeCAD model.
+- How to keep the result reproducible.
+
+## The connection
+
+```text
+OpenCode  --MCP (stdio)-->  freecad-mcp  --XML-RPC 9875-->  FreeCAD
+```
+
+- **FreeCAD** owns the document, the feature tree, and the Python environment.
+- **The FreeCAD MCP addon** runs inside FreeCAD and exposes an RPC server.
+- **`freecad-mcp`** is the external MCP server that OpenCode launches.
+- **OpenCode** decides what to do and calls the tools.
+
+The addon and the external server are separate pieces. The addon uses FreeCAD's
+bundled Python; the MCP server uses Python 3.12+ through `uvx`. Do not install
+the `freecad-mcp` package into FreeCAD's Python.
+
+The full installation is in Appendix E. The short version:
+
+```bash
+# In FreeCAD: install the addon, start the RPC server on 127.0.0.1:9875.
+opencode mcp add freecad --global -- uvx freecad-mcp --only-text-feedback
+```
+
+## Why this is different from SolidCraft
+
+SolidCraft exposes a stable set of JSON commands. FreeCAD exposes a huge Python
+API, and the MCP addon can execute Python inside the running application. That
+means the agent can do almost anything, including things you did not intend.
+
+The practical consequences:
+
+- **Ask for small steps.** One Body, one sketch, one Pad, one check.
+- **Ask for the Python.** If the agent used `execute_code`, review the script.
+- **Ask for the object tree.** The tree is the source of truth, not the
+  viewport.
+- **Recompute explicitly.** A FreeCAD document can hold a feature that has not
+  been recomputed yet.
+- **Save before risky changes.** FreeCAD has undo, but a saved `.FCStd` is
+  better.
+
+## Prompt patterns
+
+A useful FreeCAD prompt includes the workbench, the document, the object names,
+and the check.
+
+| Goal | Prompt pattern |
+|------|----------------|
+| Create a part | "In the active document, use Part Design. Create a Body, sketch a 90 × 90 rectangle on XY at the origin, Pad 2400 mm. Recompute and report the object tree and bounding box." |
+| Cut a feature | "Pocket a 46 × 141 mm rectangle 45 mm deep into the post at the rail height. Keep the Body a single solid. Report the feature tree." |
+| Drive a parameter | "Create a Spreadsheet with aliases `post_w`, `post_d`, `post_h`. Bind the sketch dimensions and Pad length to them. Change `post_h` to 2700 and report what rebuilt." |
+| Make a drawing | "Create a TechDraw page with an A3 template. Add a front elevation and a plan view of the fence panel. Do not add dimensions yet; show me the page first." |
+| Export | "Export the active document to `exports/fence.step` and `exports/fence.ifc` if the BIM objects support it. Report the files and any warnings." |
+| Understand a failure | "Read the feature tree from the first error. Explain which feature failed, which reference is broken, and what you would change. Do not edit yet." |
+
+Notice the pattern: a workbench, an object scope, the exact dimensions, a
+recompute, and a check. The agent fills in the Python; you keep the design
+intent.
+
+## The review loop
+
+| Step | Ask for | Why |
+|------|---------|-----|
+| Scope | The active document and the intended Body or object | Avoid editing the wrong part |
+| Build | One feature or one small group | Easier to inspect and undo |
+| Inspect | Object tree, feature tree, bounding box, volume | Catch missing or duplicated solids |
+| Check | Recompute and report errors | FreeCAD may not have rebuilt yet |
+| Save | A path under `designs/` | Preserve the document |
+| Document | TechDraw, screenshot, or STEP/IFC export | Produce a deliverable |
+| Record | The Python or a macro, if the model was driven by code | Reproduce the work |
+
+If the tree is a tangle of unnamed features and broken references, stop and
+rebuild that part with named sketches and stable datum planes. FreeCAD rewards
+clean structure more than SolidCraft does.
+
+## Reproducibility
+
+Keep:
+
+- the `.FCStd` document;
+- any Python macro or script used to build it;
+- the exported STEP, IFC, or drawing;
+- a short note with the FreeCAD version and the datum.
+
+FreeCAD can run scripts headlessly. With the Flatpak:
+
+```bash
+flatpak run --command=freecadcmd org.freecad.FreeCAD build_fence.py
+```
+
+A native installation usually provides `freecadcmd` directly. The script should
+open or create a document, build the objects, recompute, and save. A script that
+works only inside the GUI is not fully reproducible.
+
+## Failure modes
+
+| Symptom | Likely cause | What to do |
+|---------|--------------|------------|
+| MCP server starts but tools fail | FreeCAD RPC server is not running | Start **Start RPC Server** in the MCP Addon workbench |
+| `mcp list` says connected, but no FreeCAD action | The MCP bridge is up; FreeCAD is not | Open FreeCAD and start the RPC server |
+| Addon workbench missing | Wrong addon path or extra directory level | Check for `Mod/FreeCADMCP/InitGui.py`; read Report View |
+| Version mismatch warning | Addon and `freecad-mcp` package differ | Update both, restart FreeCAD |
+| Part Design feature fails | Sketch open, not in a Body, or self-intersecting | Check the sketch and the Body |
+| Sketch will not solve | Over-constrained or redundant constraints | Remove a dimension or constraint |
+| Feature breaks after an edit | A reference to a face or edge moved | Reattach to a datum plane or stable sketch |
+| TechDraw page is blank | Source not visible, wrong scale, or not recomputed | Recompute, check view source and scale |
+| IFC export is missing objects | Objects are not BIM objects or are outside the project | Use BIM workbench objects and check the export scope |
+
+## What to delegate, and what to keep
+
+| Delegate | Keep |
+|----------|------|
+| Repetitive object creation and renaming | The decision about construction method |
+| Python for patterns, spreadsheets, and exports | Structural and code compliance |
+| Reading the feature tree and reporting errors | Final review of the model |
+| Drafting TechDraw pages | The dimensions that matter on site |
+| File export and format conversion | The choice of source of truth |
+
+::: {.callout-warning}
+The FreeCAD MCP addon can execute arbitrary Python inside FreeCAD. Keep the RPC
+server bound to localhost, set an auth token if you enable remote access, and
+review the tools and code the agent runs. A connected agent is a powerful user,
+not a safety system.
+:::
+
+## Build along: the post, again
+
+Ask OpenCode to build the Chapter 16 post in FreeCAD:
+
+```text
+In the active FreeCAD document, use Part Design.
+Create a Body and sketch a 90 x 90 mm rectangle on XY with one corner at the origin.
+Pad it 2400 mm. Recompute, then report the Body name, the feature tree, the
+bounding box, and the volume. Save the document as designs/23-freecad-post.FCStd.
+```
+
+Then check the result yourself:
+
+- one Body and one solid;
+- bounding box 90 × 90 × 2400 mm;
+- volume about 19.44 × 10⁶ mm³;
+- a clean feature tree;
+- the file opens again.
+
+::: {.callout-note}
+**TODO:** Add a screenshot of the OpenCode session beside FreeCAD, and a note on
+which MCP tools the addon version exposed.
+:::
+
+## Exercises
+
+1. Build the post through OpenCode and compare the feature tree with a manual
+   build.
+2. Ask for a Spreadsheet-driven post height, then change it and verify.
+3. Ask for a TechDraw page, then inspect the page yourself.
+4. Ask for a Python macro that rebuilds the post headlessly. Run it with
+   `freecadcmd`.
+5. Break a face reference on purpose and ask the agent to explain the failure
+   without editing.
+
+## Next
+
+You now have two agent workflows: SolidCraft's native command/MCP loop and
+FreeCAD's Python/MCP loop. The final chapter is about choosing between them and
+combining them without creating two conflicting sources of truth.

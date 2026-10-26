@@ -1,0 +1,126 @@
+# From Sketch to Solid
+
+This is where a profile becomes a piece of wood. The main operation is extrude,
+but the useful skill is choosing the right operation and keeping the result
+clean enough to measure and modify later.
+
+## What you will learn
+
+- How extrude, revolve, sweep, and loft differ.
+- When to use new, join, cut, and intersect.
+- How to place holes and fasteners without over-modeling.
+- How to use fillets and chamfers selectively.
+
+## The basic feature: extrude
+
+Extrude takes a closed profile and pushes it along the sketch normal.
+
+- **Distance** sets the length.
+- **Direction** chooses which side of the sketch the material appears on.
+- **Operation** decides whether the result is a new body, added to an existing
+  body, removed from it, or intersected with it.
+
+For carpentry, most parts are extrusions:
+
+- post: square profile, extruded 2400 mm;
+- rail: rectangular profile, extruded 2400 mm;
+- deck board: thin rectangle, extruded 3000 mm;
+- notch: small rectangle on a face, cut into the post.
+
+## New, join, cut, intersect
+
+Think of the operation as the answer to "what should happen to the material
+already there?"
+
+| Operation | Effect | Typical use |
+|-----------|--------|-------------|
+| New | Creates a separate body | A new post or a new board |
+| Join | Adds material to an existing body | A cap, a cleat, a built-up beam |
+| Cut | Removes material | A notch, a mortise, a bolt hole |
+| Intersect | Keeps only the shared volume | Trimming a part to a roof slope |
+
+If two parts should remain separate pieces of wood, keep them as separate
+bodies or components. Do not join them just because they touch. You will want
+the separation later for the cut list, the BOM, and the exploded view.
+
+## Holes and fasteners
+
+A bolt hole is a cut, not a decorative detail. Model the clearance hole at the
+size the fastener needs, not the fastener's nominal diameter. A 10 mm bolt
+usually needs an 11 mm hole; a lag screw needs a pilot hole, not a full-diameter
+tunnel.
+
+You can model a hole as a circle in a sketch and cut it, or use the hole
+feature when you want a standard counterbore, countersink, or tapped hole. Do
+not model threads unless the thread is the point of the exercise. A clearance
+hole plus a note in the BOM is enough for most carpentry.
+
+## Edges: fillet and chamfer
+
+Fillets round an edge; chamfers cut a flat corner. Use them for:
+
+- taking the sharp edge off a post top;
+- showing a eased edge on a handrail;
+- representing a manufactured roundover;
+- making a render look like finished lumber.
+
+Do not fillet every edge. It slows the model, clutters the timeline, and makes
+dimensions harder to read. Model the edges a builder would actually notice.
+
+## Patterns and mirrors
+
+Once a part exists, repeat it rather than redrawing it:
+
+- rectangular pattern for pickets, balusters, studs, and joists;
+- mirror for left and right gate stiles or stair stringers;
+- path pattern for a curved fence or railing.
+
+Patterns are covered properly in Chapter 6. For now, know that a repeated part
+should have one source, not twenty independent copies.
+
+## What not to model
+
+- Saw kerf, unless you are laying out a cut list that depends on it.
+- Every screw, nail, and washer.
+- Wood grain, knots, and paint texture.
+- Tiny chamfers that do not affect fit or appearance at book scale.
+
+The model is a planning tool. Detail that does not change a decision is cost.
+
+## Build along: a notched post
+
+1. Start with the 90 × 90 × 2400 mm post from Chapter 1.
+2. Create a sketch on the face where the rail will meet the post.
+3. Draw a rectangle for the notch: rail width plus 1 mm clearance, and the
+   depth the rail needs to sit into the post.
+4. Cut the profile into the post.
+5. Check that the post is still one body and that the notch is on the correct
+   face.
+6. Save as `designs/04-notched-post.solidcraft`.
+
+::: {.callout-note}
+**TODO:** Add the exact notch dimensions, screenshots of the cut, and a note on
+which face was chosen and why.
+:::
+
+## Checks
+
+- The body count is what you expect. A cut should not leave a hidden sliver.
+- The bounding box still matches the overall part size.
+- The notch dimensions match the rail plus clearance.
+- The cut is on the intended face, not the mirror-image face.
+- No zero-thickness walls or coincident faces remain.
+
+## Exercises
+
+1. Cut a 12 mm bolt hole through a 90 × 90 post, 100 mm below the top.
+2. Chamfer the top four edges of a post by 5 mm.
+3. Make a 45 × 140 mm joist with a 40 mm deep notch at each end.
+4. Build a 90 × 90 post with a 45 × 140 rail joined into it. Keep the rail as
+   a separate body.
+
+## Next
+
+Hard-coded numbers work for one part. The next chapter replaces them with
+parameters so the same model can become a different fence, deck, or shed
+without redrawing it.

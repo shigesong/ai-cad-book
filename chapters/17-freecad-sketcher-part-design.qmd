@@ -1,0 +1,114 @@
+# Sketcher and Part Design in FreeCAD
+
+Part Design is where most carpentry parts live in FreeCAD. A sketch becomes a
+solid, and later features add or remove material. The skill is not memorizing
+the toolbar; it is keeping the feature tree short and the sketches stable.
+
+## What you will learn
+
+- The Sketcher constraint and dimension workflow.
+- Pad, Pocket, Revolution, and Groove.
+- Fillets, chamfers, mirrors, and patterns.
+- How to keep a Body editable as the design changes.
+
+## The Sketcher workflow
+
+A Part Design feature starts with a sketch. The reliable sequence is:
+
+1. Choose a plane: XY for plan, XZ for front elevation, YZ for side elevation,
+   or a datum plane/face for a local feature.
+2. Draw the profile with lines, rectangles, circles, arcs, or slots.
+3. Add geometric constraints before dimensions.
+4. Add dimensional constraints for the values that matter.
+5. Check the solver status and remaining degrees of freedom.
+6. Close the sketch.
+
+FreeCAD's Sketcher has the same core constraints as SolidCraft: horizontal,
+vertical, coincident, parallel, perpendicular, tangent, equal, symmetric,
+midpoint, and lock. It also has construction geometry for reference lines that
+should not become part of the profile.
+
+## Pad, Pocket, Revolution, Groove
+
+These are the four workhorses:
+
+| Feature | Effect | Carpentry use |
+|---------|--------|---------------|
+| Pad | Extrudes a profile into material | Posts, rails, boards |
+| Pocket | Cuts a profile into material | Notches, mortises, holes |
+| Revolution | Revolves a profile around an axis | Round posts, turned details |
+| Groove | Cuts a revolved profile | Grooves and reliefs |
+
+A Pad can add material to the same Body; a Pocket removes it. If you need a
+separate piece of wood, use a separate Body, not another Pad on the same Body.
+
+## Dress-up features
+
+After the primary shape:
+
+- **Fillet** rounds an edge.
+- **Chamfer** cuts a flat corner.
+- **Draft** adds a release angle.
+- **Thickness** hollows a solid.
+- **Mirrored** mirrors a feature across a plane.
+- **LinearPattern** repeats a feature along a direction.
+- **PolarPattern** repeats around an axis.
+- **MultiTransform** combines patterns and mirrors.
+
+Use them for the features a builder would notice: an eased post top, a repeated
+bolt hole, a pair of mirrored gate stiles. Do not fillet every edge.
+
+## Stable references
+
+FreeCAD attaches features to faces and edges. When an earlier feature changes,
+those references can become ambiguous. This is the "topological naming" problem.
+FreeCAD 1.x improved it, but the safe habits still matter:
+
+- attach sketches to datum planes where possible;
+- avoid referencing a face that a later feature will split or remove;
+- name sketches and features clearly;
+- prefer a small number of stable, well-named features over a long chain of
+  cosmetic edits;
+- recompute and inspect the tree after a major dimension change.
+
+If a feature breaks after an edit, read the first error in the tree. Reattach the
+sketch to a stable plane or face; do not delete the whole Body.
+
+## Build along: a notched post
+
+1. Build the 90 × 90 × 2400 mm post from Chapter 16.
+2. Create a datum plane at the rail height, or sketch on the face where the
+   rail will meet the post.
+3. Draw a rectangle for the notch: rail width plus 1 mm clearance, and the
+   depth the rail needs to sit into the post.
+4. Pocket the profile into the post.
+5. Confirm the Body is still one solid and the notch is on the intended face.
+6. Save as `designs/17-freecad-notched-post.FCStd`.
+
+::: {.callout-note}
+**TODO:** Add the notch dimensions, screenshots of the Pocket, and a note on
+whether the sketch was attached to a datum plane or a face.
+:::
+
+## Checks
+
+- The sketch is fully constrained, or its remaining freedom is intentional.
+- The nested feature tree is readable.
+- The Body still contains one solid.
+- The notch dimensions match the rail plus clearance.
+- A recompute does not produce warnings.
+- The model can be edited without reattaching every feature.
+
+## Exercises
+
+1. Pocket a 12 mm bolt hole through the post.
+2. Chamfer the top four edges by 5 mm.
+3. Make a 45 × 140 mm joist with a 40 mm deep notch at each end.
+4. Use LinearPattern to repeat three bolt holes at 100 mm spacing.
+5. Deliberately attach a sketch to a face, change an earlier feature, and repair
+   the broken reference.
+
+## Next
+
+Hard-coded values are fine for one part. The next chapter replaces them with a
+spreadsheet so a fence panel or deck frame can become a family of sizes.

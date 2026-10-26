@@ -1,0 +1,120 @@
+# Site, Slope, and Weather
+
+The site is part of the design. A fence on a slope, a deck above wet ground,
+and a shed under a tree all behave differently from the same structure on a
+flat, dry, open lot.
+
+## What you will learn
+
+- What site information belongs in the model.
+- How to handle slope without modeling the whole yard.
+- How ground clearance and drainage affect the design.
+- Which weather and material issues a CAD model can and cannot answer.
+
+## Measure the site
+
+Record:
+
+- overall dimensions at several points;
+- high and low ground elevations;
+- slope direction and approximate gradient;
+- the location of utilities, trees, roots, and obstructions;
+- existing structures and their finished floor levels;
+- drainage paths and low spots;
+- access for materials and tools.
+
+A slope can be represented as a plane, a stepped line, or a series of spot
+elevations. Use the simplest representation that answers the design question.
+You do not need a survey-grade terrain model to notice that one corner of the
+deck is 400 mm lower than the other.
+
+## Put the site in the model
+
+A practical approach:
+
+1. Set the building datum at the finished floor or the high-side ground line.
+2. Add a site plane at the actual slope.
+3. Measure the gap between the structure and the plane at each post or corner.
+4. Use those gaps to set post lengths, footing heights, or step locations.
+
+For a fence, the post lengths change along the run. For a deck, the stair rise
+changes. For a shed, the floor platform may need a step or a retaining edge.
+
+## Ground clearance and drainage
+
+Water is the main enemy of exterior wood. Check:
+
+- clearance from siding and framing to grade;
+- clearance from deck framing to grade;
+- drainage away from footings and posts;
+- roof runoff and downspout locations;
+- splashback on the bottom of posts and siding.
+
+The exact clearance values come from local code and the material manufacturer.
+Model the clearance so it can be checked in section; do not bury a post in the
+ground because the drawing looks tidy.
+
+## Frost, wind, and exposure
+
+These are engineering inputs, not geometry:
+
+- frost depth and footing depth;
+- wind exposure and uplift;
+- snow load;
+- seismic requirements;
+- salt or coastal exposure;
+- sun and rain exposure.
+
+The model can show where a footing, anchor, or brace goes. It cannot decide the
+size. Record the assumptions in the chapter or a design note, and have the
+structure checked.
+
+## Material movement
+
+Wood moves with moisture. Design for it:
+
+- leave expansion gaps between deck boards;
+- avoid trapping water between two pieces of wood;
+- allow ventilation behind siding and under a deck;
+- do not model a tight fit where the material needs to swell;
+- use drainage gaps and standoffs where the detail calls for them.
+
+A 5 mm gap at model scale is a deliberate design decision, not a modeling
+error. Label it.
+
+## Build along: a sloped fence run
+
+1. Start with the straight fence run from Chapter 11.
+2. Add a site plane that drops 300 mm over the 7200 mm run.
+3. Measure the ground elevation at each post.
+4. Adjust each post length so the tops stay level.
+5. Check the bottom rail clearance at the low end.
+6. Check that the gate still clears the ground through its swing.
+
+::: {.callout-note}
+**TODO:** Add the actual slope, the post-length table, and a section showing the
+low-side clearance.
+:::
+
+## Checks
+
+- The structure sits at the intended elevation relative to the site.
+- Post lengths vary where the ground varies.
+- Water drains away from the structure, not into it.
+- The gate and door clear the ground through their full travel.
+- Clearances match the manufacturer's or code requirement.
+- Assumptions about frost, wind, and exposure are written down.
+
+## Exercises
+
+1. Model a deck on a 200 mm cross-slope. Where does the stair land?
+2. Add a downspout that discharges next to a deck post. What would you change?
+3. Model a shed on a slope with a 300 mm step at the door. Check headroom and
+   threshold clearance.
+4. List five site facts your current model does not contain. Which ones change
+   a dimension?
+
+## Next
+
+The model is nearly ready to leave the screen. The last chapter is about
+turning it into a build sequence, a cut list, and an as-built record.

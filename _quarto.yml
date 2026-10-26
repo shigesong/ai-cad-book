@@ -1,0 +1,69 @@
+project:
+  type: book
+  output-dir: _book
+
+book:
+  title: "CAD for Carpentry"
+  subtitle: "Practical SolidCraft and FreeCAD models for fences, decks, and sheds"
+  author: "Shige"
+  date: today
+  search: true
+  chapters:
+    - index.qmd
+    - chapters/00-introduction.qmd
+    - part: "Foundations"
+      chapters:
+        - chapters/01-solidcraft-tour.qmd
+        - chapters/02-units-and-measurement.qmd
+        - chapters/03-sketching.qmd
+        - chapters/04-from-sketch-to-solid.qmd
+        - chapters/05-parameters.qmd
+    - part: "SolidCraft modeling"
+      chapters:
+        - chapters/06-components-and-repetition.qmd
+        - chapters/07-joinery-and-fasteners.qmd
+        - chapters/08-measuring-and-checking.qmd
+        - chapters/09-figures-and-takeoffs.qmd
+        - chapters/10-opencode.qmd
+    - part: "SolidCraft projects"
+      chapters:
+        - chapters/11-fence.qmd
+        - chapters/12-deck.qmd
+        - chapters/13-shed.qmd
+        - chapters/14-site-and-weather.qmd
+        - chapters/15-from-model-to-build.qmd
+    - part: "FreeCAD"
+      chapters:
+        - chapters/16-freecad-tour.qmd
+        - chapters/17-freecad-sketcher-part-design.qmd
+        - chapters/18-freecad-parameters-spreadsheets.qmd
+        - chapters/19-freecad-techdraw.qmd
+        - chapters/20-freecad-fence.qmd
+        - chapters/21-freecad-deck.qmd
+        - chapters/22-freecad-shed-bim.qmd
+        - chapters/23-freecad-opencode.qmd
+        - chapters/24-choosing-and-combining.qmd
+  appendices:
+    - appendices/a-command-map.qmd
+    - appendices/b-troubleshooting.qmd
+    - appendices/c-glossary.qmd
+    - appendices/d-open-source-landscape.qmd
+    - appendices/e-freecad-setup.qmd
+
+format:
+  html:
+    theme: cosmo
+    toc: true
+    toc-depth: 2
+    number-sections: true
+    code-copy: true
+  typst:
+    papersize: a4
+    margin:
+      x: 0.75in
+      y: 0.75in
+    toc: true
+    number-sections: true
+
+execute:
+  enabled: false

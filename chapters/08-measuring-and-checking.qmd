@@ -1,0 +1,132 @@
+# Measuring and Checking
+
+A model is not finished when it looks finished. It is finished when the
+dimensions you care about are correct and the parts do not collide. This
+chapter is the inspection pass.
+
+## What you will learn
+
+- How to measure bodies and selections.
+- How to check clearance and interference.
+- How to verify square, spacing, and alignment.
+- How to use sections to see inside an assembly.
+
+## Measure the body first
+
+Start with the coarse facts:
+
+- bounding box;
+- volume;
+- surface area;
+- centre of mass;
+- face, edge, and vertex counts.
+
+The bounding box catches wrong planes and wrong overall lengths. Volume catches
+missing or doubled features. Face counts are a quick warning that a boolean
+left a sliver or split a face into many fragments.
+
+For a 90 × 90 × 2400 mm post, the bounding box should be exactly that, and the
+volume should be about 19.44 × 10⁶ mm³. If the volume is 9.72 × 10⁶ mm³, the
+profile was half the intended area.
+
+## Measure selections
+
+You can measure more than whole bodies:
+
+- the length of an edge;
+- the area of a face;
+- the position of a vertex;
+- the diameter of a circle or cylinder;
+- the distance between two faces, edges, or points;
+- the centre-to-centre distance between two holes.
+
+This is how you check a bolt pattern, a picket gap, or the diagonal of a gate.
+Measure the geometry you will actually use on site, not a dimension that only
+exists in the sketch.
+
+## Clearance and interference
+
+Two different questions:
+
+- **Interference:** do two bodies overlap? Even a tiny overlap is a problem if
+  the parts are supposed to be separate.
+- **Clearance:** how close are two bodies that do not overlap? A gate that
+  misses its post by 0.5 mm is technically clear and practically useless.
+
+Run both checks on moving parts and on assemblies that will be built from
+separate pieces. Contact between two boards that are meant to touch is fine;
+contact between a door and its frame is not.
+
+## Checking square
+
+For a rectangular frame, measure both diagonals. Equal diagonals mean the frame
+is square, assuming the opposite sides are equal. This is the same 3-4-5
+logic you use on site, applied to the model.
+
+For a fence run, check:
+
+- post spacing at the top and bottom;
+- the overall run length;
+- the offset of each post from the datum line;
+- the diagonal of each bay if the ground is sloped.
+
+## Sections
+
+A section cuts the model and shows the inside. Use it to check:
+
+- whether a tenon bottoms out in a mortise;
+- whether a bolt passes through both members;
+- whether a notch is deep enough;
+- whether a roof plane meets a wall plate cleanly.
+
+A section is also a useful figure for the book: it explains a joint better than
+an exterior view.
+
+## Common failures
+
+| Symptom | Likely cause | Check |
+|---------|--------------|-------|
+| Bounding box is rotated | Sketch on the wrong plane | Plane and normal |
+| Volume is half | Open or duplicated profile | Profile status |
+| Parts overlap slightly | Nominal sizes used instead of actual | Material dimensions |
+| Gate binds | No clearance in the model | Clearance check |
+| Hole misses | Wrong face or datum | Hole position from a known edge |
+| Diagonal differs | Frame out of square | Both diagonals |
+| Body count too high | Cuts leaving slivers | Face/body list |
+
+## Build along: inspect the gate
+
+1. Open the half-lap gate from Chapter 7.
+2. Measure the overall width, height, and thickness.
+3. Measure both diagonals.
+4. Run an interference check on the frame and brace.
+5. Run a clearance check between the gate and its posts through the swing arc.
+6. Cut a section through one lap and confirm the joint depth.
+7. Save the checks as a short list in the chapter.
+
+::: {.callout-note}
+**TODO:** Add the measured values, screenshots of the section and interference
+results, and the tolerance you decided the gate needs.
+:::
+
+## Checks
+
+- Overall dimensions match the design brief.
+- Diagonals are equal within your tolerance.
+- No unintended interference.
+- Moving parts have clearance through their full travel.
+- Sections show the intended joint depth.
+- Units are still millimetres.
+
+## Exercises
+
+1. Measure the diagonal of a 2400 × 1800 mm fence panel. What should it be?
+2. Check the clearance between a 1000 mm gate and a 90 mm post at 90° open.
+3. Find an accidental overlap in a model you have already built.
+4. Measure the distance from a bolt hole centre to the nearest edge. Compare it
+   with the fastener manufacturer's minimum.
+
+## Next
+
+Once the model is correct, it has to communicate. The next chapter turns it
+into figures, sections, and a takeoff you can take to the shop.

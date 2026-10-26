@@ -1,0 +1,171 @@
+# FreeCAD for SolidCraft Users
+
+FreeCAD is the mature open-source counterpart to SolidCraft. It is broader,
+older, and more demanding. Where SolidCraft gives you a small command set and a
+fast part-modeling loop, FreeCAD gives you a full platform: Part Design,
+Sketcher, Spreadsheets, TechDraw drawings, BIM with IFC, FEM, CAM, and a Python
+API.
+
+This chapter is the bridge. It assumes you have used the SolidCraft track, or at
+least read Part I, and translates the ideas you already know.
+
+## What you will learn
+
+- How FreeCAD's workbench model differs from SolidCraft's command model.
+- The Part Design Body, the feature tree, and the Sketcher.
+- How FreeCAD handles files, assemblies, drawings, and BIM.
+- How to make and check a first FreeCAD post.
+
+## Install and launch
+
+FreeCAD 1.1 is the current series used in this book. Install it from
+<https://www.freecad.org/downloads> or use your package manager or Flatpak.
+
+On this Linux setup, FreeCAD is installed as a Flatpak:
+
+```bash
+flatpak run org.freecad.FreeCAD
+```
+
+The exact install and FreeCAD MCP setup are in Appendix E. For this chapter you
+only need the desktop application.
+
+## Workbenches instead of one command set
+
+SolidCraft exposes one command set across the UI, CLI, scripts, and MCP. FreeCAD
+organizes tools into **workbenches**. A workbench is a task-specific collection
+of tools and toolbar buttons. The ones used in this book are:
+
+| Workbench | What it does |
+|-----------|--------------|
+| Sketcher | Draws and constrains 2D profiles |
+| Part Design | Turns sketches into a single solid with a feature tree |
+| Spreadsheet | Holds named values and expressions |
+| TechDraw | Produces 2D drawings from the 3D model |
+| BIM | Builds building elements and native IFC models |
+| Part | Primitives, booleans, and general solid operations |
+| Assembly | Places and constrains separate parts |
+
+You can switch workbenches from the workbench selector. The model does not
+change when you switch; only the available tools do.
+
+## The Body and the feature tree
+
+In Part Design, a **Body** is a container for one contiguous solid. Inside the
+Body is a feature tree:
+
+```text
+Body
+├── Origin
+│   ├── XY_Plane
+│   ├── XZ_Plane
+│   └── YZ_Plane
+├── Sketch
+├── Pad
+├── Pocket
+└── Fillet
+```
+
+This is FreeCAD's version of SolidCraft's timeline. A sketch is turned into
+material with **Pad** (extrude) or **Revolution**, and removed with **Pocket**
+or **Groove**. Later features, such as fillets and patterns, sit on top.
+
+A Body should contain one connected solid. If you are modeling separate boards,
+use separate Bodies. That is the same rule as keeping separate bodies in
+SolidCraft: the cut list needs to know what is a separate piece of wood.
+
+## Sketches and constraints
+
+The Sketcher is conceptually close to SolidCraft:
+
+- draw lines, rectangles, circles, and arcs;
+- add geometric constraints (horizontal, vertical, coincident, parallel,
+  perpendicular, tangent, equal, symmetric);
+- add dimensional constraints;
+- watch the solver's remaining degrees of freedom;
+- close and finish the sketch.
+
+FreeCAD reports whether a sketch is fully constrained, under-constrained, or
+has conflicting/redundant constraints. A fully constrained sketch is a good
+checkpoint, not a moral requirement. What matters is that the dimensions you
+care about cannot drift.
+
+::: {.callout-tip}
+If a sketch will not solve, remove a redundant dimension or constraint before
+redrawing. Over-constraining is the most common beginner error in both FreeCAD
+and SolidCraft.
+:::
+
+## Files, parts, and assemblies
+
+FreeCAD's native file is `.FCStd`. It contains the document, its objects, and
+the feature history. It is a container, not a plain text file.
+
+Useful exchange formats:
+
+| Format | Use |
+|--------|-----|
+| `.FCStd` | Native FreeCAD document |
+| STEP | Neutral solid exchange with other CAD tools |
+| IGES | Older neutral exchange format |
+| STL / 3MF / OBJ | Meshes for visualization and printing |
+| DXF | 2D drawings and profiles |
+| IFC | BIM exchange through the BIM workbench |
+
+For an assembly, FreeCAD can use the **Assembly** workbench (FreeCAD 1.0+) or a
+**Part** container. The details are in the project chapters. The important
+habit is the same as in SolidCraft: one source part, many placements.
+
+## What is different from SolidCraft
+
+| Area | SolidCraft | FreeCAD |
+|------|------------|---------|
+| Tool model | One command set, palette, CLI, MCP | Workbenches with their own tools |
+| History | Timeline of features | Body feature tree |
+| Extrude / cut | `solid.extrude`, cut operations | Pad, Pocket, Revolution, Groove |
+| Parameters | Parameters table and expressions | Spreadsheet aliases and expressions |
+| Drawings | Views, sections, screenshots, DXF | TechDraw pages and dimensions |
+| BIM / IFC | Not supported | BIM workbench with native IFC |
+| Automation | JSON commands, CLI, MCP | Python API, macros, community MCP |
+| Maturity | Early, small feature set | Mature, large feature set and ecosystem |
+
+FreeCAD is not simply "SolidCraft with more buttons." It is a different
+platform with a different learning curve. The concepts transfer; the workflows
+do not always.
+
+## Build along: a 90 × 90 × 2400 mm post
+
+1. Open FreeCAD and create a new document.
+2. Switch to the **Part Design** workbench.
+3. Create a **Body**.
+4. Create a sketch on the **XY_Plane**.
+5. Draw a rectangle with one corner at the origin and the opposite corner at
+   `(90, 90)`. Constrain it and dimension both sides to 90 mm.
+6. Close the sketch.
+7. **Pad** the sketch 2400 mm.
+8. Save as `designs/16-freecad-post.FCStd`.
+
+::: {.callout-note}
+**TODO:** Add screenshots of the Body, the constrained sketch, the Pad, and the
+finished post. Note the FreeCAD version used.
+:::
+
+## Checks
+
+- The document contains one Body and one solid.
+- The bounding box is 90 × 90 × 2400 mm.
+- The sketch is fully constrained or intentionally under-constrained.
+- The feature tree reads as a short, understandable sequence.
+- The file reopens without a recompute error.
+
+## Exercises
+
+1. Make a 140 × 140 × 2400 mm post.
+2. Make a 45 × 140 × 2400 mm rail with the 140 mm face vertical.
+3. Add a 5 mm chamfer to the top edges.
+4. Save the same part as STEP and reopen it in a new FreeCAD document.
+
+## Next
+
+The next chapter goes deeper into Sketcher and Part Design: pads, pockets,
+patterns, and the feature-tree habits that keep a FreeCAD model editable.

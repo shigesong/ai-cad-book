@@ -1,0 +1,130 @@
+# Units, Datums, and Real Lumber
+
+Most CAD mistakes are not modeling mistakes. They are unit mistakes, datum
+mistakes, or assumptions about material that is not the size the drawing says.
+This chapter sets the conventions that the rest of the book uses.
+
+## What you will learn
+
+- Why the book models in millimetres.
+- The difference between nominal and actual lumber.
+- How to choose a datum that survives a design change.
+- How to treat tolerance and material movement as design input.
+
+## Why millimetres
+
+Woodworking happens at the millimetre scale. A 1 mm error is visible in a joint;
+a 0.1 mm error usually is not. Working in one unit removes a whole class of
+conversion errors, especially when hardware dimensions are metric and lumber
+dimensions are not.
+
+SolidCraft can display mm, cm, m, inches, or feet. The display unit changes how
+values are shown; it does not change the model. Pick mm for this book and stay
+with it unless a supplier's drawing forces something else.
+
+::: {.callout-tip}
+If a dimension looks ten times too large or too small, check the display unit
+before editing geometry. Converting the model to "fix" a unit display is a
+classic way to create a real error.
+:::
+
+## Nominal is not actual
+
+A "2 × 4" is a name, not a size. In North American softwood construction the
+actual dressed size is smaller. The table below is an example, not a universal
+standard; metric timber, hardwoods, and imported stock follow different rules.
+
+| Nominal | Actual (mm) | Common use |
+|---------|-------------|------------|
+| 2 × 4 | 38 × 89 | studs, rails, blocking |
+| 2 × 6 | 38 × 140 | joists, deck boards, rails |
+| 2 × 8 | 38 × 184 | joists, beams |
+| 2 × 10 | 38 × 235 | joists, beams |
+| 2 × 12 | 38 × 286 | joists, headers |
+| 4 × 4 | 89 × 89 | posts |
+| 6 × 6 | 140 × 140 | heavier posts |
+
+The habit that matters is: **model the actual size, record the nominal name.**
+If you model a 2 × 4 as 50 × 100 mm, every joint, gap, and cut list will be
+wrong by a few millimetres, and those millimetres accumulate.
+
+## Choose a datum
+
+A datum is the reference from which dimensions are measured. Good datums are
+easy to find on site and unlikely to move when the design changes.
+
+Useful choices:
+
+- the outside face of a corner post;
+- the top of a finished deck;
+- the ground line at the high side of a sloped site;
+- the centreline of a wall or fence run.
+
+Avoid using the centre of a board that might change size later, or a decorative
+edge that a future feature might cut away. Write the datum down in the chapter
+or in a design note. "Origin at the outside corner of the north-east post, top
+of post at Z = 1800" is much better than "origin at the corner."
+
+## Tolerances are part of the design
+
+CAD geometry is exact. Wood is not. A model that assumes two boards occupy the
+same space will look fine on screen and fail on site.
+
+A practical starting point:
+
+- **1–2 mm** clearance for a joint that should slide together or a part that
+  must not bind.
+- **3–5 mm** allowance for site layout and framing tolerances.
+- **3–6 mm** gaps between deck boards, following the manufacturer's guidance
+  for the material and climate.
+- A visible expansion gap wherever a panel, board, or gate meets something
+  that will not move.
+
+These are starting values, not rules. Your tools, species, moisture content,
+and climate decide the real number.
+
+## Measure the site, not the drawing
+
+Before modeling an existing wall, deck, or fence line, measure the actual
+condition. Record:
+
+- overall length and width at more than one place;
+- diagonals, to detect out-of-square;
+- the difference in ground height across the footprint;
+- the location of doors, windows, downspouts, utilities, and obstructions;
+- any slope or camber in an existing surface.
+
+Put those measurements into parameters early. A model built on a guessed 4000
+mm site will not survive contact with a 3965 mm reality.
+
+## Build along: a rail with the right section
+
+1. Set the design units to mm.
+2. Make a 45 × 140 mm rectangle, with the 140 mm face vertical.
+3. Extrude it 2400 mm.
+4. Place the bottom at Z = 0 and the outside face at Y = 0.
+5. Save it as `designs/02-rail.solidcraft`.
+
+Then change the display unit to inches and back to mm. Confirm that the
+geometry did not move.
+
+## Checks
+
+- The rail's bounding box is 45 × 140 × 2400 mm.
+- The 140 mm dimension is vertical, not horizontal.
+- The datum faces are the ones you would measure from on site.
+- The nominal name ("2 × 6") is recorded somewhere, even though the model uses
+  38 × 140 mm.
+
+## Exercises
+
+1. Model a 38 × 89 mm stud, 2400 mm long.
+2. Model a 19 × 140 mm deck board, 3000 mm long, with a 5 mm gap to its
+   neighbour. What is the pitch from one board to the next?
+3. Measure a board in your shop. Compare its actual dimensions with the nominal
+   name and with the table above.
+
+## Next
+
+With units and datums under control, you can start drawing profiles. The next
+chapter is about sketches that behave predictably when you change them.

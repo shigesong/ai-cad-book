@@ -1,0 +1,117 @@
+# Glossary
+
+**Actual dimension**
+: The measured size of a piece of lumber after surfacing. A nominal 2 × 4 is
+  commonly 38 × 89 mm.
+
+**Assembly**
+: A collection of components placed together, often with joints or fasteners.
+
+**Bill of materials (BOM)**
+: A list of the parts in an assembly with counts, part numbers, and
+  descriptions. It is not the same as a cut list.
+
+**BIM**
+: Building information modeling. A model of building elements—walls, slabs,
+  levels, spaces, openings—with data and relationships, often exchanged as IFC.
+
+**Body**
+: A single solid in a design. In SolidCraft, a component can contain one or more
+  bodies. In FreeCAD Part Design, a Body is a container for one contiguous solid.
+
+**Clearance**
+: The gap between two parts that do not overlap. Clearance is what lets a door
+  swing or a board slide into place.
+
+**Component**
+: A reusable definition made of bodies and features. Placing it creates
+  occurrences.
+
+**Constraint**
+: A rule that holds sketch geometry in a relationship, such as horizontal,
+  parallel, equal, or coincident.
+
+**Cut list**
+: A shop list of parts to cut, grouped by stock size and length, including kerf
+  and waste. Derived from the BOM and the design.
+
+**Datum**
+: The reference point, line, or face from which dimensions are measured.
+
+**Degrees of freedom (DOF)**
+: The remaining ways a sketch can move. A fully constrained sketch has zero
+  degrees of freedom.
+
+**Extrude**
+: A feature that pushes a closed profile along its normal to create a solid. In
+  FreeCAD Part Design, this is a **Pad**.
+
+**FCStd**
+: FreeCAD's native document format. It contains the objects and the feature
+  history.
+
+**Feature**
+: One step in the design history, such as a sketch, extrude, cut, or fillet.
+
+**Fillet**
+: A rounded edge or corner.
+
+**Chamfer**
+: A flat, angled cut on an edge or corner.
+
+**IFC**
+: Industry Foundation Classes. An open exchange format for BIM models.
+
+**Interference**
+: An overlap between two bodies that should occupy separate space.
+
+**Nominal dimension**
+: The name of a lumber size, such as 2 × 4, which may differ from its actual
+  size.
+
+**Occurrence**
+: One placement of a component in an assembly.
+
+**On-centre (OC)**
+: Spacing measured from the centre of one repeated member to the centre of the
+  next.
+
+**Pad**
+: FreeCAD's Part Design operation that extrudes a sketch into material.
+
+**Parameter**
+: A named value or expression that drives geometry.
+
+**Pocket**
+: FreeCAD's Part Design operation that cuts a sketch profile into material.
+
+**Profile**
+: A closed 2D shape that can become a solid.
+
+**Rise and run**
+: The vertical and horizontal components of a stair, roof, or slope.
+
+**Sketch**
+: A 2D profile plus its constraints and dimensions.
+
+**Spreadsheet alias**
+: A name given to a FreeCAD spreadsheet cell so expressions can refer to it.
+
+**TechDraw**
+: FreeCAD's workbench for producing 2D drawings from a 3D model.
+
+**Timeline**
+: The ordered history of features that builds the design.
+
+**Tolerance**
+: The acceptable variation in a dimension or fit.
+
+**Tread**
+: The horizontal part of a stair step.
+
+**Riser**
+: The vertical part of a stair step.
+
+**Workbench**
+: A task-specific collection of tools in FreeCAD, such as Part Design,
+  Spreadsheet, TechDraw, or BIM.

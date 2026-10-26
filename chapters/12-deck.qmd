@@ -1,0 +1,119 @@
+# Project: A Small Deck
+
+A deck is a system of repeated parts in two directions. The modeling challenge
+is not any single board; it is keeping the posts, beams, joists, decking, guard,
+and stairs consistent when one dimension changes.
+
+## Design brief
+
+| Item | Example value |
+|------|---------------|
+| Deck size | 4000 × 6000 mm |
+| Deck surface above grade | 400 mm |
+| Posts | 140 × 140 mm |
+| Beams | 45 × 184 mm, built up as required |
+| Joists | 45 × 140 mm at 400 mm centres |
+| Decking | 19 × 140 mm, 5 mm gap |
+| Guard height | 1000 mm |
+| Stairs | total rise 400 mm, layout to code |
+
+::: {.callout-warning}
+Joist spans, beam sizes, footing sizes, ledger attachment, guard loads, and
+stair geometry are structural and code-regulated. The values above are
+modeling examples. Have the structure sized by a qualified person and checked
+against local code before building.
+:::
+
+## What you will model
+
+1. A rectangular frame with posts at the corners and intermediate points.
+2. Beams supporting the joists.
+3. Joists at a consistent on-centre spacing.
+4. Decking with a consistent gap and an edge detail.
+5. A guard with posts, rails, and balusters.
+6. A stair with consistent rise and run.
+
+## Step 1: Datum and posts
+
+Put the origin at the outside corner of the deck frame at grade. Set the top of
+the finished deck at Z = 400. Work downward from the finished surface when
+setting post and beam heights; that is the dimension a builder actually cares
+about.
+
+Model the posts as components. A deck often has more posts than the drawing
+first suggests: corners, intermediate beam supports, and guard posts.
+
+## Step 2: Beams and joists
+
+Beams run in one direction; joists run across them. Decide which direction the
+decking runs before placing the joists, because the decking span and the joist
+spacing are related.
+
+Use a rectangular pattern for the joists. Set the spacing from the first joist
+to the last, and check the actual clear gap between joists. A 400 mm on-centre
+spacing with a 45 mm joist gives a 355 mm clear gap. That is the number a
+plumber or electrician will care about.
+
+Keep the joists as separate bodies or as one patterned feature, depending on
+how you want the BOM to count them. If you need a per-piece cut list, separate
+bodies or components are easier to work with.
+
+## Step 3: Decking
+
+Deck boards are a repeated pitch: board width plus gap. With 140 mm boards and
+a 5 mm gap, the pitch is 145 mm. The number of boards across a 4000 mm deck is
+roughly `4000 / 145`, rounded to fit the edge detail.
+
+Decide early how the edges finish:
+
+- butt joints at the rim;
+- a picture-frame border;
+- a fascia board that hides the ends;
+- a deliberate overhang.
+
+Each choice changes the cut list and the figure. Model the one you intend to
+build.
+
+## Step 4: Guard and stairs
+
+A guard is a small frame repeated along the open sides. Model one post, one
+rail assembly, and one baluster, then repeat. Check:
+
+- guard height above the finished deck;
+- baluster spacing and the sphere that must not pass through it;
+- post attachment and blocking;
+- the gap at the bottom rail.
+
+For the stair, set the total rise first, then divide it into equal risers. A
+stair with one riser different from the rest is a trip hazard. Model the
+stringer, treads, and landing as separate parts; check that the top tread meets
+the deck surface cleanly.
+
+## Step 5: Check the assembly
+
+- Joist spacing is uniform, including the two end bays.
+- Decking pitch is uniform and the edge boards fit.
+- Guard posts align with framing below, not just with the decking.
+- Stair risers are equal and treads are consistent.
+- No framing member passes through a footing or a post.
+- Clearance exists between decking and any solid wall.
+
+## Deliverables
+
+- framing plan with joist spacing;
+- decking plan with board direction and edge detail;
+- section through the deck edge and guard;
+- stair elevation;
+- BOM and cut list.
+
+## Exercises
+
+1. Widen the deck to 5000 mm. How many joists and deck boards change?
+2. Add a picture-frame border. What happens to the cut list?
+3. Model a stair for a 600 mm rise. Recalculate the risers and treads.
+4. Change the joist spacing from 400 to 600 mm. Which parts and checks change?
+
+## Next
+
+The shed adds walls, openings, and a roof. It is the first project where the
+building envelope, not just the frame, drives the model.

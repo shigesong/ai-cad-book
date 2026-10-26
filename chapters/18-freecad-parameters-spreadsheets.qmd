@@ -1,0 +1,128 @@
+# Parameters and Spreadsheets in FreeCAD
+
+FreeCAD does not have SolidCraft's parameter table, but it has something more
+general: the Spreadsheet workbench. A spreadsheet can hold named values,
+expressions, and design tables, and any Part Design dimension can read from it.
+
+## What you will learn
+
+- How to create a spreadsheet and name its cells.
+- How to drive sketches and features with expressions.
+- How to build a standard-stock library and a design table.
+- How to change a value and verify the rebuild.
+
+## The spreadsheet is the parameter table
+
+Create a **Spreadsheet** from the Spreadsheet workbench. Each cell can have a
+value, a unit, and an alias. The alias is the name you use in expressions.
+
+A simple fence parameter set:
+
+| Cell | Alias | Value | Meaning |
+|------|-------|-------|---------|
+| A1 | `post_w` | 90 mm | Post width |
+| A2 | `post_d` | 90 mm | Post depth |
+| A3 | `post_h` | 2400 mm | Post height |
+| A4 | `bay_width` | 2400 mm | Post centre spacing |
+| A5 | `rail_w` | 45 mm | Rail thickness |
+| A6 | `rail_h` | 140 mm | Rail depth |
+| A7 | `picket_w` | 140 mm | Picket width |
+| A8 | `picket_gap` | 20 mm | Gap between pickets |
+
+Set the alias in the cell's properties, then use it in a dimension or a feature
+parameter with an expression such as:
+
+```text
+Spreadsheet.post_h
+```
+
+If the spreadsheet has a different label, use that label instead. FreeCAD
+expressions are unit-aware; `Spreadsheet.post_h + 100 mm` is valid.
+
+## Drive a sketch from the spreadsheet
+
+1. Open the sketch that dimensions the post.
+2. Select a dimensional constraint.
+3. Open the expression editor for its value.
+4. Enter `Spreadsheet.post_h`.
+5. Close the sketch and recompute.
+
+The constraint now displays an expression instead of a fixed number. Change the
+spreadsheet cell and the sketch rebuilds.
+
+The same works for a Pad length, a Pocket depth, a pattern count, or a
+spreadsheet-computed spacing. Not every property accepts an expression, but most
+numeric ones do.
+
+## Standard stock as a library
+
+Put the standard sections in their own spreadsheet or in a clearly named block:
+
+| Alias | Value |
+|-------|-------|
+| `stock_2x4_w` | 38 mm |
+| `stock_2x4_h` | 89 mm |
+| `stock_2x6_w` | 38 mm |
+| `stock_2x6_h` | 140 mm |
+| `stock_2x8_w` | 38 mm |
+| `stock_2x8_h` | 184 mm |
+| `stock_4x4` | 89 mm |
+| `stock_6x6` | 140 mm |
+
+When a supplier's actual size differs, change the library value once. The model
+and the cut list follow.
+
+## Design tables and configurations
+
+A design table is a spreadsheet with one row per variant and one column per
+parameter. Recent FreeCAD versions support configuration tables that let you
+switch a Body between named variants.
+
+For a fence panel:
+
+| Variant | `bay_width` | `post_h` | `picket_w` | `picket_gap` |
+|---------|-------------|----------|------------|--------------|
+| Small | 1800 mm | 1200 mm | 90 mm | 20 mm |
+| Standard | 2400 mm | 1800 mm | 140 mm | 20 mm |
+| Tall | 2400 mm | 2100 mm | 140 mm | 20 mm |
+
+The exact configuration workflow depends on your FreeCAD version. If your build
+does not expose configuration tables, use separate spreadsheet rows and a small
+macro, or keep one document per variant. The modeling principle is the same.
+
+## Build along: parameterize the post
+
+1. Open the post from Chapter 16.
+2. Add a Spreadsheet with `post_w`, `post_d`, and `post_h`.
+3. Replace the sketch dimensions and the Pad length with expressions.
+4. Change `post_h` to 2700 mm and recompute.
+5. Confirm the post rebuilds and the feature tree is clean.
+6. Save as `designs/18-freecad-parametric-post.FCStd`.
+
+::: {.callout-note}
+**TODO:** Add screenshots of the spreadsheet, the expression editor, and the
+rebuilt post. Note any property that refused an expression.
+:::
+
+## Checks
+
+- Every alias is unique and meaningful.
+- Units are explicit where an expression mixes units.
+- Changing one value does not produce a recompute error.
+- The Body still has the expected solid count.
+- The bounding box matches the new values.
+- The spreadsheet is saved inside the document, not only exported.
+
+## Exercises
+
+1. Add `rail_spacing` and use it to position two rails on a post.
+2. Build a stock library for 2 × 4, 2 × 6, and 4 × 4 lumber.
+3. Make a three-variant design table for a fence panel.
+4. Drive a LinearPattern count from a spreadsheet cell.
+5. Break an expression on purpose and read the error message. Repair it without
+   undoing the whole model.
+
+## Next
+
+A parameterized model is still a 3D model. The next chapter turns it into a
+dimensioned shop drawing with TechDraw.

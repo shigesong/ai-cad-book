@@ -1,0 +1,126 @@
+# Project: A Deck in FreeCAD
+
+The deck is where FreeCAD's assembly and drawing tools start to pay off. You
+have repeated joists, a guard, and a stair, and you need a framing plan that a
+builder can read.
+
+## Design brief
+
+| Item | Example value |
+|------|---------------|
+| Deck size | 4000 × 6000 mm |
+| Deck surface above grade | 400 mm |
+| Posts | 140 × 140 mm |
+| Beams | 45 × 184 mm, built up as required |
+| Joists | 45 × 140 mm at 400 mm centres |
+| Decking | 19 × 140 mm, 5 mm gap |
+| Guard height | 1000 mm |
+| Stairs | total rise 400 mm, layout to code |
+
+::: {.callout-warning}
+Joist spans, beam sizes, footing sizes, ledger attachment, guard loads, and stair
+geometry are structural and code-regulated. The values above are modeling
+examples. Have the structure sized and checked before building.
+:::
+
+## What you will model
+
+1. A parameter spreadsheet for the deck.
+2. Bodies for posts, beams, joists, decking, guard, and stair parts.
+3. Repeated joists and deck boards.
+4. A framing plan and a stair section in TechDraw.
+
+## Step 1: Parameterize the deck
+
+Create a spreadsheet with:
+
+| Alias | Value |
+|-------|-------|
+| `deck_w` | 4000 mm |
+| `deck_l` | 6000 mm |
+| `deck_h` | 400 mm |
+| `joist_spacing` | 400 mm |
+| `joist_w` | 45 mm |
+| `joist_h` | 140 mm |
+| `board_w` | 140 mm |
+| `board_gap` | 5 mm |
+| `guard_h` | 1000 mm |
+
+Use expressions for the frame dimensions and the array spacing. The deck is a
+good candidate for a design table: 3000, 4000, and 5000 mm wide versions differ
+mostly by counts.
+
+## Step 2: Posts and beams
+
+Build one post Body, then place it at the corners and intermediate supports.
+Build the beams as separate Bodies. Keep the beam and post as separate pieces;
+they are different stock and different cuts.
+
+Set the finished deck surface at Z = 400 and work downward. That is the datum a
+builder measures from.
+
+## Step 3: Joists and decking
+
+Model one joist and repeat it:
+
+- sketch the 45 × 140 section;
+- Pad to the span;
+- use a Draft Array for separate joist objects, or a Part Design pattern for a
+  repeated feature inside one Body;
+- drive the count from the deck width and spacing.
+
+Model one deck board and repeat it with a 145 mm pitch (140 mm board plus 5 mm
+gap). Check the first and last boards at the edge detail.
+
+If you use a picture-frame border, model it as a separate set of Bodies. It
+changes the cut list.
+
+## Step 4: Guard and stair
+
+Build the guard as a repeated post-and-rail assembly. Check:
+
+- guard height above the finished deck;
+- baluster spacing;
+- post attachment and blocking;
+- the gap at the bottom rail.
+
+For the stair, set the total rise first, divide it into equal risers, and model
+the stringer, treads, and landing as separate parts. Check that the top tread
+meets the deck cleanly.
+
+## Step 5: Drawing and BOM
+
+Create a TechDraw page with:
+
+- a framing plan showing joist spacing and beam locations;
+- a decking plan showing board direction and edge detail;
+- a section through the deck edge and guard;
+- a stair elevation with rise and run.
+
+For quantities, use a spreadsheet BOM grouped by stock size, or the BIM
+workbench schedule if you built the deck with BIM objects. Check the count
+against the visible parts.
+
+## Checks
+
+- Joist spacing is uniform, including the end bays.
+- Deck board pitch is uniform.
+- Guard posts align with framing below.
+- Stair risers are equal and treads are consistent.
+- No member passes through a post or footing.
+- The drawing scale and dimensions are correct.
+- The BOM count matches the assembly.
+
+## Exercises
+
+1. Widen the deck to 5000 mm and update the spreadsheet.
+2. Add a picture-frame border and revise the cut list.
+3. Model a stair for a 600 mm rise.
+4. Change the joist spacing to 600 mm and see which dimensions break.
+5. Compare the FreeCAD Assembly workflow with the SolidCraft component-copy
+   workflow.
+
+## Next
+
+The shed adds walls, openings, and a roof. It is also the FreeCAD chapter where
+the BIM workbench and IFC become useful.

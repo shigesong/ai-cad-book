@@ -1,0 +1,136 @@
+# Choosing and Combining the Two Tools
+
+SolidCraft and FreeCAD overlap, but they are not interchangeable. The useful
+question is not "which one is better?" It is "which one should own this
+deliverable?"
+
+## What you will learn
+
+- A practical decision rule for each tool.
+- When a hybrid workflow makes sense.
+- How to avoid two conflicting models.
+- What to hand off between the tools.
+
+## The short comparison
+
+| Task | SolidCraft | FreeCAD |
+|------|------------|---------|
+| Fast part modeling | Excellent | Good, but heavier |
+| Sketches and constraints | Yes | Yes, more mature |
+| Feature history | Timeline | Body feature tree |
+| Repeated parts | Components, patterns | Bodies, Draft arrays, patterns |
+| Parameters | Native parameter table | Spreadsheet and expressions |
+| Shop drawings | Screenshots, sections, DXF | TechDraw sheets and dimensions |
+| BIM / IFC | No | BIM workbench, native IFC |
+| Python automation | No native Python API | Full Python API |
+| Agent workflow | Native JSON commands and MCP | Community MCP addon, Python execution |
+| Learning curve | Lower | Higher |
+| Maturity | Early | Mature |
+
+The pattern is clear: SolidCraft is faster for parts and agent-driven loops;
+FreeCAD is broader and better for drawings, BIM, and Python-heavy automation.
+
+## A decision rule
+
+Use **SolidCraft** when:
+
+- the deliverable is a part or a small assembly;
+- you want a fast sketch → solid → check loop;
+- you want an AI agent to drive the model through a small, stable command set;
+- you need figures and a part-level BOM, not construction documents;
+- the project is a fence, a gate, a deck frame, a stair, or a shed detail.
+
+Use **FreeCAD** when:
+
+- you need dimensioned shop drawings from TechDraw;
+- you need a BIM model, IFC export, levels, walls, and schedules;
+- you want one open-source platform for CAD, drawings, and BIM;
+- you need a Python API or a macro that runs outside the GUI;
+- you are coordinating with other trades or a building model.
+
+Use **both** when the project has a clear split: parts in SolidCraft, building
+and documentation in FreeCAD.
+
+## Hybrid workflows that work
+
+### SolidCraft parts, FreeCAD documentation
+
+1. Model the repetitive or tricky parts in SolidCraft.
+2. Export STEP (or DXF for a profile).
+3. Import STEP into FreeCAD.
+4. Build the assembly, TechDraw sheets, or BIM model in FreeCAD.
+5. Keep SolidCraft as the source for the part geometry and FreeCAD as the
+   source for the building/documentation.
+
+This is a good fit for a shed: model the door, stair, or bracket in SolidCraft,
+then place it in the FreeCAD BIM model.
+
+### FreeCAD BIM, SolidCraft details
+
+1. Build the building shell and levels in FreeCAD BIM.
+2. Identify the details that need precise part modeling.
+3. Model those parts in SolidCraft.
+4. Export STEP and place the result in FreeCAD.
+
+This keeps the building model authoritative while giving the detail the faster
+part-modeling loop.
+
+### One tool only
+
+- **SolidCraft only:** a fence, deck, or shed where figures and a cut list are
+  enough, and no permit drawings or IFC are required.
+- **FreeCAD only:** a project that needs TechDraw drawings or BIM from the start,
+  or a team that already works in FreeCAD.
+
+## The source-of-truth rule
+
+Pick one source of truth per deliverable:
+
+- If the part geometry is the deliverable, SolidCraft can own it.
+- If the building model and drawings are the deliverable, FreeCAD should own
+  them.
+- The other tool receives a derived export, not a second master.
+
+Do not edit the same part in both tools and expect them to stay in sync. A STEP
+file is geometry; it does not carry the SolidCraft timeline, the FreeCAD feature
+tree, or the BIM properties.
+
+## What not to do
+
+- Do not expect an IFC round trip through SolidCraft. It has no IFC support.
+- Do not treat a STEP import as a parametric model. It is a solid, not a feature
+  history.
+- Do not build the same fence twice and then wonder which cut list is current.
+- Do not use a BIM tool for a single bracket, or a part modeler for a whole
+  building, unless the project really calls for it.
+- Do not let an agent edit both models in one session without a clear source of
+  truth.
+
+## A final checklist
+
+Before you choose:
+
+- What is the deliverable: a part, a drawing, a cut list, or an IFC model?
+- Who will consume it: you, a builder, a shop, or a BIM coordinator?
+- Does it need dimensions on a sheet, or just a figure and a BOM?
+- Does it need building semantics or only geometry?
+- Will an agent drive it, and through which interface?
+- Which file is the master, and which is the export?
+
+## Exercises
+
+1. Take the fence project and write a one-page decision note: which tool owns
+   the model, and why?
+2. Model one repeated part in SolidCraft, export STEP, and place it in FreeCAD.
+3. Build a small wall in FreeCAD BIM, export IFC, and inspect it in a viewer.
+4. List three things that would be lost if you moved the FreeCAD shed to
+   SolidCraft.
+5. Write a source-of-truth rule for a two-person workshop.
+
+## Where to go next
+
+- Finish the exercises in the track you skipped.
+- Add your own project: a workbench, a planter, a pergola, a chicken coop.
+- Improve the book's figures and examples as you learn.
+- Keep the command map, troubleshooting, and setup appendices current with the
+  versions you actually use.

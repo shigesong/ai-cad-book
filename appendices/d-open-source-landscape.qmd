@@ -1,0 +1,112 @@
+# Open Source CAD and BIM Landscape
+
+SolidCraft and FreeCAD are the two open-source tools this book uses. Bonsai is
+the third reference point, because it is a native IFC authoring environment.
+The category difference still matters: BIM—building information modeling—is
+about building elements and their data: walls, slabs, levels, spaces, doors,
+properties, and an IFC model that other tools can exchange. SolidCraft is a
+parametric solid modeler for parts and small assemblies; FreeCAD spans both
+Part Design and BIM.
+
+That difference matters more than any feature table. This appendix is a
+practical map, not a feature-by-feature audit. Versions move; check the current
+documentation before making a decision.
+
+## At a glance
+
+| | SolidCraft | FreeCAD | Bonsai |
+|---|---|---|---|
+| **Category** | Parametric part and small-assembly CAD | General CAD with a BIM workbench | Native IFC BIM authoring |
+| **IFC** | No import or export | Import/export; native IFC in the BIM workbench | Native: edits read and write IFC |
+| **Building elements** | No walls, levels, spaces, or schedules | Walls, slabs, openings, levels, spaces | Walls, slabs, openings, levels, spaces |
+| **Parametric history** | Sketch constraints and a feature timeline | Feature tree | BIM-parametric objects, not a mechanical feature timeline |
+| **2D documentation** | Views, sections, screenshots, DXF; no drawing sheets | TechDraw sheets and annotations | Drawings generated from the IFC model |
+| **Automation** | JSON commands, headless CLI, MCP | Python API | Python and IfcOpenShell |
+| **Quantities** | Part-level BOM and measurements | Schedules and spreadsheets | IFC properties, schedules, quantities |
+| **Collaboration** | Local files | File-based | IFC/BCF workflows; viewer and web tools |
+| **Maturity** | Early (0.22.x at the time of writing) | Mature, large ecosystem | Active, mature BIM toolset |
+| **License** | MIT OR Apache-2.0 | LGPL-2.1 | GPL-3.0 |
+| **Best for** | Fence, deck, shed, and joinery details | One open-source tool for CAD, BIM, and drawings | OpenBIM authoring and coordination |
+
+## What SolidCraft is good at
+
+- **Precise parts.** Constraints, dimensions, extrude, cut, fillet, pattern,
+  components, and a rebuildable timeline are the right tools for a post, rail,
+  joist, or gate frame.
+- **Repeatable work.** Every action is a command. The UI, CLI, scripts, and an
+  AI agent use the same commands, so a simple design can be replayed and
+  checked.
+- **Carpentry-scale deliverables.** Figures, sections, measurements,
+  interference checks, STEP/IGES export, and a part-level BOM are enough for a
+  small exterior project.
+- **Local ownership.** Designs are ordinary files. There is no subscription,
+  cloud account, or model server.
+
+## What SolidCraft does not do
+
+- **No IFC.** You cannot hand a SolidCraft model to a BIM coordinator as an IFC
+  model.
+- **No building semantics.** There are no walls, slabs, levels, spaces, doors,
+  or schedules as BIM objects.
+- **No construction drawing sheets.** It renders views and sections, and can
+  export a DXF view, but it is not a documentation authoring system.
+- **No federated coordination.** It checks interference between bodies in one
+  design; it does not coordinate architectural, structural, and MEP models.
+- **No real-time multi-user collaboration.** It is a local design file.
+
+None of that is a defect for this book. It is a boundary.
+
+## FreeCAD in one paragraph
+
+FreeCAD is a mature, general-purpose open-source CAD platform. Part Design
+covers parametric solids; the BIM workbench adds architectural objects, native
+IFC, and a path to 2D drawings through TechDraw. It also includes FEM, CAM, and
+a large Python API. The trade-off is complexity: it is a platform with many
+workbenches, and feature attachments can be fragile when earlier geometry
+changes. Choose it when you want one open-source tool that can cover CAD, BIM,
+drawings, and analysis without assembling a stack.
+
+## Bonsai in one paragraph
+
+Bonsai (formerly BlenderBIM) is a native IFC authoring environment built on
+Blender and IfcOpenShell. It is designed for OpenBIM work: model, document, and
+manage building data, with IFC as the file format rather than an export step.
+Its strengths are building semantics, schedules, and coordination workflows.
+The trade-off is that it is BIM-first and Blender-based; it is not a mechanical
+feature-history modeler, and the learning curve is steep if you only need a
+precise board or bracket.
+
+## Using them together
+
+A practical split:
+
+- Model the detailed parts and small assemblies in SolidCraft.
+- Export STEP, DXF, or a figure for handoff.
+- If the project needs a building model, IFC coordination, or a permit set,
+  assemble and document it in FreeCAD or Bonsai.
+
+Do not expect an IFC round trip. SolidCraft has no IFC path, and a STEP export
+carries geometry, not building semantics. Treat the handoff as geometry and
+drawings, not as a live BIM exchange.
+
+## Choosing for this book
+
+For a fence, a deck, a shed, or a run of joinery, SolidCraft is the faster part
+modeler: you need part precision, repeatable assemblies, and a cut list, not a
+whole building model. FreeCAD is the better choice when you need TechDraw
+sheets, BIM/IFC, or a single open-source platform. Part IV models the same
+projects in FreeCAD so you can compare directly. Bonsai remains the specialized
+native-IFC alternative.
+
+The one-line version: **SolidCraft is an open-source parametric part modeler
+that is unusually well suited to carpentry-scale work and agent-driven
+workflows; FreeCAD is the broader CAD/BIM platform; Bonsai is native IFC
+authoring.**
+
+## Further reading
+
+- SolidCraft documentation: <https://docs.solidcraft.io/>
+- FreeCAD documentation: <https://wiki.freecad.org>
+- FreeCAD BIM workbench: <https://wiki.freecad.org/BIM_Workbench>
+- Bonsai: <https://bonsaibim.org>
+- IfcOpenShell: <https://ifcopenshell.org>

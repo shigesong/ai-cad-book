@@ -1,0 +1,226 @@
+# Introduction: CAD, Construction, and Carpentry {.unnumbered}
+
+Before you draw a post or extrude a rail, it helps to know what kind of tool
+you are holding. CAD has a short but dense history, and the choices made along
+the way still shape what a modeler is good at—and what it quietly ignores.
+
+This introduction is a map, not a complete history. It covers where CAD came
+from, how construction and carpentry adopted it, the main trade-offs you face
+when choosing a tool, and where SolidCraft sits among them.
+
+## From numerical control to Sketchpad
+
+CAD did not begin as a way to make prettier drawings. It began as a way to
+control machines and to make engineering drawings that could be changed without
+redrawing every line.
+
+In the 1950s, numerical control (NC) and the APT programming language separated
+the geometry of a part from the hand movements of a machinist. A toolpath could
+be described, stored, and replayed. That idea—geometry as data—is the root of
+everything that follows.
+
+In 1963, Ivan Sutherland's Sketchpad at MIT showed a different possibility:
+a person drawing directly on a screen with a light pen, with constraints and
+reusable symbols. Sketchpad is often called the first interactive CAD program.
+Its important idea was not the pen. It was that a drawing could be a model with
+rules, not ink on a page.
+
+Around the same time, General Motors and IBM developed DAC-1 (Design Augmented
+by Computers), one of the first interactive design systems, used on car bodies. The two strands—machine control and interactive design—were
+already pointing toward the modern CAD model: geometry that can be computed,
+checked, and used to make something.
+
+## The turnkey years
+
+Through the 1970s, CAD lived on expensive minicomputers sold as turnkey
+systems by companies such as Computervision, Calma, and Applicon. Drafters used
+them for 2D drawings, layers, blocks, dimensions, and repeated details. The
+work was faster and more consistent than a drawing board, but the hardware and
+software were out of reach for a small carpentry shop.
+
+The 1980s changed that. AutoCAD arrived in 1982 and put 2D drafting on
+personal computers. At the same time, solid modeling research matured into
+commercial tools. Boundary representation (B-rep) and constructive solid
+geometry (CSG) made it possible to compute volumes, intersections, and
+manufacturable shapes rather than only draw their projections.
+
+In 1988, Pro/ENGINEER popularized a different way of working: parametric,
+feature-based, history-based modeling. Dimensions became drivers. A part was a
+sequence of features, and changing an early dimension rebuilt the later ones.
+That is the model most modern mechanical CAD still uses, and it is the model
+this book uses for carpentry.
+
+## Solids, assemblies, and buildings
+
+The 1990s brought parametric modeling to the desktop. SolidWorks (1995) made
+history-based solid modeling more affordable and more approachable. In
+construction, a parallel shift was happening under the name BIM—building
+information modeling. A building was no longer only a set of lines; it was a
+database of walls, slabs, openings, materials, and relationships. Revit, which
+arrived in 2000, became one of the best-known expressions of that idea.
+
+BIM is powerful for large projects because it coordinates many trades,
+detects clashes, and produces quantities from the same model. It is also a
+different kind of tool from a part modeler. A BIM authoring system expects
+walls, levels, families, and a whole building. A carpentry part modeler expects
+a board, a joint, and a cut list.
+
+The 2000s and 2010s added cloud collaboration, browser-based CAD, direct
+modeling (editing geometry without a long history), and much closer links to
+digital fabrication. CNC routers, beam saws, panel optimizers, and timber
+framing machines consume geometry directly. A model can now become a cut file,
+a drilling pattern, or a machine path.
+
+In the 2020s, the newest layer is programmability. CAD tools expose APIs and
+scripts; AI agents can call those APIs through protocols such as MCP. The
+interesting question is no longer only "can the tool draw it?" but "can the
+tool explain, repeat, and verify what it drew?"
+
+| Period | What changed | Why it mattered |
+|--------|--------------|-----------------|
+| 1950s–1960s | NC, APT, Sketchpad, DAC-1 | Geometry became programmable and interactive |
+| 1970s | Turnkey 2D drafting | Drawings became digital, but stayed expensive |
+| 1980s | PCs, AutoCAD, commercial solid modeling | CAD reached small firms; solids became computable |
+| 1990s–2000s | Parametric feature modeling, BIM | Design intent and building data became central |
+| 2000s–2010s | Cloud CAD, direct modeling, digital fabrication | Collaboration and machine-ready geometry |
+| 2020s | APIs, scripts, AI agents, MCP | Models can be automated, inspected, and delegated |
+
+## CAD on the job site
+
+Construction adopted CAD in layers.
+
+**First as drawings.** Plans, elevations, sections, details, and shop drawings
+replaced or supplemented hand drafting. Layers and blocks made repeated details
+consistent. Much of the industry still runs on 2D PDFs, and that is not a
+failure; a clear plan sheet is still one of the best communication devices ever
+invented.
+
+**Then as a coordination model.** BIM brought geometry, properties, and
+relationships together. On large projects, the model can detect a duct passing
+through a beam before anyone orders steel. It can also produce schedules and
+quantities that would take days to count by hand.
+
+**Then as a fabrication input.** CNC routers, panel saws, and timber processing
+machines cut from digital geometry. Cabinet shops nest parts on sheets; timber
+framers cut joinery from a model; deck and fence shops pre-cut kits. The model
+becomes a set of instructions, not just a picture.
+
+For a small carpentry project, the most useful unit is usually not a whole
+building. It is a part or a small assembly: a fence panel, a gate, a deck frame,
+a stair, a shed wall. That is the scale where a parametric solid model pays for
+itself quickly. You can check a spacing, count the boards, and see the joint
+before you cut.
+
+What CAD does not do is equally important. It does not measure the site for
+you. It does not know that the lumber is wet, cupped, or 3 mm under size. It
+does not grant a permit or prove a beam is strong enough. Those remain
+judgement, measurement, and code work.
+
+## The main choices
+
+There is no single best CAD tool. The choice follows the project, the shop, and
+the people who have to use the output.
+
+| Decision | Options | Carpentry consequence |
+|----------|---------|-----------------------|
+| Scope | 2D drafting, 3D solids, BIM | A plan sheet is fast; a solid answers fit and volume; BIM coordinates a whole building |
+| Editing | Direct, parametric history | Direct is quick for exploration; parametric preserves intent and rebuilds |
+| Geometry | Solid, surface, mesh | Solids are right for boards and joints; meshes are for visualization and printing |
+| Location | Desktop, browser, cloud | Local is private and offline; cloud is easier to share but depends on a service |
+| License | Proprietary, open source | Commercial brings ecosystem and support; open source brings cost, control, and inspectability |
+| Focus | General CAD, BIM, trade-specific | General CAD is flexible; trade tools bring libraries and production rules |
+| Control | Manual, scripts, agents | Automation is faster and repeatable, but requires a review loop |
+
+The last row is the one this book cares about most. A model that can be
+scripted is also a model that can be checked, repeated, and explained. That is
+useful even if you never ask an AI to touch it.
+
+## Where SolidCraft fits
+
+SolidCraft is an open-source parametric solid modeler. It is not a BIM
+authoring tool, and it does not try to be one. It works at the scale of parts
+and small assemblies, which is exactly the scale of a fence, a deck, or a shed.
+
+A few things make it unusual:
+
+- **It is open source** under MIT or Apache-2.0. You can inspect it, run it
+  locally, and keep your designs in ordinary files.
+- **It runs in several places**—desktop app, browser app, headless CLI, and an
+  MCP server—with the same command set underneath.
+- **Everything is a command.** The toolbar, the command palette, a script, the
+  CLI, and an AI agent all run the same JSON commands. A simple design can be
+  replayed from a script, which makes it reproducible and teachable; designs
+  with components or joints are still a scripting limitation.
+- **It is parametric.** Sketches have constraints and dimensions; features sit
+  on a timeline; changing a parameter rebuilds the model.
+- **It speaks useful formats.** STEP and IGES import and export, plus 3MF, STL,
+  OBJ, and glTF where supported. For carpentry, STEP is the useful neutral
+  exchange format; meshes are for visualization, not measurement.
+- **It does not require a high-end workstation.** A current GPU with Vulkan,
+  Direct3D 12, Metal, or OpenGL is best; a software renderer is a slow fallback.
+  The headless CLI can build and measure without a window.
+
+The combination is rare: open source, local-first, parametric, and
+command-driven, with the same model reachable from a person, a script, and an
+agent. For a learning book, that transparency matters more than a long feature
+list. You can see what the tool did, replay it, and change one variable at a
+time.
+
+::: {.callout-warning}
+SolidCraft is early. Surfaces, construction drawings, CAM, and simulation are
+deferred, and the feature set is smaller than a mature commercial CAD or BIM
+package. It is excellent for learning the geometry of carpentry parts and small
+assemblies; it is not a substitute for a structural engineer, a building
+department, or a shop's established production pipeline.
+:::
+
+## Two tools, two jobs
+
+This book uses SolidCraft and FreeCAD together, not as interchangeable
+alternatives but as two tools with different strengths.
+
+- **SolidCraft** is the fast part modeler: sketch, extrude, check, repeat, and
+  drive it with a small native command set. It owns the SolidCraft track
+  (Parts I–III).
+- **FreeCAD** is the broader platform: Part Design, Spreadsheets, TechDraw
+  drawings, BIM with IFC, and a mature Python API. It owns the FreeCAD track
+  (Part IV).
+
+The overlap is real. Both sketch, constrain, extrude, and parameterize. The
+split is about deliverables. If you need a part, a figure, and a cut list,
+SolidCraft is quicker. If you need a dimensioned shop drawing, an IFC model, or
+a Python-driven workflow, FreeCAD is the better owner.
+
+For a side-by-side comparison with the main open-source BIM tools, including
+Bonsai, see [Appendix D](../appendices/d-open-source-landscape.qmd).
+
+## How this book uses them
+
+The SolidCraft track stays at the part-and-assembly scale. You model posts,
+rails, pickets, joists, decking, studs, and a simple roof, then turn those
+models into figures and a bill of materials. The FreeCAD track rebuilds the same
+projects, adds TechDraw sheets, and turns the shed into a small BIM model with
+IFC export.
+
+You will not model a whole house, a full set of construction documents, or a
+machine-ready production line. The conventions are simple: millimetres, Z up,
+actual lumber dimensions, a datum you can find on site, and a check for every
+model. The goal is not to memorize buttons. It is to build enough judgement that
+you can look at a model and know which dimensions matter, which clearances are
+missing, and which questions belong on site rather than on screen.
+
+## Further reading
+
+- Ivan Sutherland, *Sketchpad: A Man-Machine Graphical Communication System*
+  (1963), available as a Cambridge technical report:
+  <https://www.cl.cam.ac.uk/techreports/UCAM-CL-TR-574.pdf>
+- SolidCraft documentation: <https://docs.solidcraft.io/>
+- FreeCAD documentation: <https://wiki.freecad.org>
+- FreeCAD MCP: <https://github.com/neka-nat/freecad-mcp>
+- Charles Eastman, Paul Teicholz, Rafael Sacks, and Ghang Lee, *BIM Handbook:
+  A Guide to Building Information Modeling for Owners, Designers, Engineers,
+  Contractors, and Facility Managers*, 3rd edition (Wiley, 2018).
+
+Dates in this introduction are approximate, and the history is selective. The
+aim is to explain why today's tools look the way they do, not to settle
+priority claims about individual inventions.

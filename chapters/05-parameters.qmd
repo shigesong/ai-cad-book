@@ -1,0 +1,137 @@
+# Parameters and Design Intent
+
+A parameter is a named number or expression. Parameters turn a model from a
+drawing of one object into a family of objects. They are also the best defense
+against the "change one dimension and fix twenty sketches" problem.
+
+## What you will learn
+
+- Which dimensions deserve a name.
+- How expressions and units work.
+- How to build a small standard-stock library.
+- How to change a parameter and verify the rebuild.
+
+## Name the numbers that will change
+
+Not every dimension needs a parameter. Parameterize the values that a client,
+site, or supplier is likely to change:
+
+- overall height and width;
+- post spacing and bay width;
+- joist spacing and deck depth;
+- wall stud spacing;
+- door and window openings;
+- material thicknesses;
+- clearances and gaps.
+
+Leave one-off details as plain dimensions. A model with two hundred parameters
+is as hard to use as one with none.
+
+## A small parameter set for a fence
+
+A useful starting set:
+
+| Name | Value | Meaning |
+|------|-------|---------|
+| `post_size` | 90 mm | actual post width and depth |
+| `post_height` | 1800 mm | top of post above ground |
+| `bay_width` | 2400 mm | post centre to post centre |
+| `rail_section_w` | 45 mm | rail thickness |
+| `rail_section_h` | 140 mm | rail depth |
+| `picket_width` | 140 mm | actual picket width |
+| `picket_gap` | 20 mm | gap between pickets |
+| `picket_thickness` | 19 mm | actual picket thickness |
+
+Now a 1800 mm fence and a 2100 mm fence are the same model with one value
+changed. A 2400 mm bay and a 3000 mm bay are the same model with another.
+
+## Expressions and units
+
+Parameters can be numbers or expressions:
+
+- `bay_width / 2`
+- `post_height + 100 mm`
+- `picket_width + picket_gap`
+- `30 deg`
+
+Keep units explicit when an expression mixes units. A value written as `1800`
+inherits the design's display unit; `1800 mm` is unambiguous. Angles are degrees
+in expressions even though the kernel stores radians.
+
+::: {.callout-tip}
+If an expression refuses to evaluate, simplify it to a single number first.
+Then add one operation at a time. Most errors are a unit mismatch or a
+reference to a parameter that was renamed.
+:::
+
+## Standard stock as a library
+
+You will reuse the same sections across every project. Make a small library of
+standard values:
+
+- `stock_2x4_w = 38 mm`, `stock_2x4_h = 89 mm`
+- `stock_2x6_w = 38 mm`, `stock_2x6_h = 140 mm`
+- `stock_2x8_w = 38 mm`, `stock_2x8_h = 184 mm`
+- `stock_4x4 = 89 mm`
+- `stock_6x6 = 140 mm`
+
+These names are more meaningful than `d1`, `d2`, `d3`, and they make the model
+self-documenting. When a supplier's actual size differs, change the library
+value once.
+
+## Design tables for repeated sizes
+
+A design table is a list of parameter sets: one row per variant. Use it when
+you need a family of parts rather than a single model:
+
+- fence panels at 1800, 2100, and 2400 mm;
+- decks at 3000, 4000, and 5000 mm wide;
+- shed walls at 2400 and 3000 mm.
+
+Even a simple table in the chapter is useful:
+
+| Variant | Bay width | Post height | Picket count |
+|---------|-----------|-------------|--------------|
+| Small | 1800 mm | 1200 mm | 11 |
+| Standard | 2400 mm | 1800 mm | 14 |
+| Tall | 2400 mm | 2100 mm | 14 |
+
+The counts are examples; recalculate them with the picket/gap formula in
+Chapter 11.
+
+## Build along: parameterize the post
+
+1. Open the post from Chapter 1.
+2. Add parameters `post_w = 90 mm`, `post_d = 90 mm`, and
+   `post_h = 2400 mm`.
+3. Replace the sketch dimensions and the extrude distance with those
+   parameters.
+4. Change `post_h` to 2700 mm and confirm that the post rebuilds.
+5. Change it back to 2400 mm.
+6. Save as `designs/05-parametric-post.solidcraft`.
+
+::: {.callout-note}
+**TODO:** Add screenshots of the parameter table and the rebuilt post. Note any
+features that fail when the height changes and how you fixed them.
+:::
+
+## Checks
+
+- Every parameter has a unit or a unitless purpose.
+- Changing one parameter does not produce a warning in the timeline.
+- The model still has the expected body count.
+- The bounding box matches the new values.
+
+## Exercises
+
+1. Add `rail_spacing` and use it to position two rails on a post.
+2. Make a fence panel whose picket count is derived from `bay_width`,
+   `picket_width`, and `picket_gap`.
+3. Build a two-variant design table for a 1800 mm and a 2400 mm panel.
+4. Break a parameter on purpose (rename it, or give it the wrong unit) and read
+   the error message. Repair it without undoing the whole model.
+
+## Next
+
+Parameters make one part flexible. The next chapter makes many copies of that
+part without losing track of which is the source.

@@ -1,0 +1,99 @@
+# TechDraw and Shop Drawings
+
+TechDraw is FreeCAD's 2D documentation workbench. It projects the 3D model onto
+a page, adds dimensions and annotations, and exports a PDF, SVG, or DXF. This is
+the part of FreeCAD that replaces the screenshots-and-sections workflow from the
+SolidCraft track.
+
+## What you will learn
+
+- How to create a TechDraw page and place views.
+- How to add projected, section, and detail views.
+- How to dimension and annotate a drawing.
+- How to export a drawing for the shop.
+
+## The drawing workflow
+
+A reliable sequence:
+
+1. Finish and check the 3D model.
+2. Create a TechDraw page with a template and a title block.
+3. Insert a view of the Body or assembly.
+4. Add projected views (front, top, side).
+5. Add a section or detail view for the joint that matters.
+6. Add dimensions and annotations.
+7. Check the scale, line weights, and title block.
+8. Export PDF for printing and DXF/SVG if the shop needs it.
+
+TechDraw is not a freehand 2D drafting program. It projects the model. If a
+dimension is wrong, fix the model, not the drawing.
+
+## Pages, templates, and views
+
+A page uses a template, usually A4 or A3, with a title block. You can use the
+default templates or make your own with your shop's name and revision fields.
+
+Useful view types:
+
+- **Insert View** — a single view of a selected object.
+- **Projection Group** — front/top/side views in one step.
+- **Section View** — cuts the model and shows the inside.
+- **Detail View** — enlarges a small area.
+- **BIM DrawingView** — in FreeCAD 1.1, creates plan/elevation drawings from
+  BIM objects for use on a TechDraw page.
+
+For a fence panel, the useful set is a plan, a front elevation, and a section
+through a rail-to-post connection. For a deck, a framing plan and a stair
+section. For a shed, a floor plan, wall elevation, and roof section.
+
+## Dimensions and annotations
+
+TechDraw dimensions are linked to the projected geometry. Add:
+
+- overall length, width, and height;
+- post spacing and joist spacing;
+- rail and picket positions;
+- hole diameters and edge distances;
+- notes for material, fasteners, and finish.
+
+Keep dimensions off the part outline where possible. A drawing that is crowded
+with dimensions is harder to read than one with a clean overall view and a
+detailed section.
+
+## Build along: a fence panel drawing
+
+1. Open the fence panel from Chapter 20.
+2. Create a TechDraw page with an A3 template and title block.
+3. Insert a front elevation and a plan view.
+4. Add a section through a rail-to-post connection.
+5. Dimension the overall height, bay width, post spacing, and picket gap.
+6. Add notes for material and fasteners.
+7. Export `drawings/20-fence-panel.pdf`.
+8. Export a DXF copy if you want to edit the layout in another 2D tool.
+
+::: {.callout-note}
+**TODO:** Add the drawing PDF, a screenshot of the TechDraw page, and a note on
+the template and scale used.
+:::
+
+## Checks
+
+- The page uses the intended template and scale.
+- Every important dimension appears once, not twice.
+- Section and detail views show the joint clearly.
+- The title block has the project name, date, and revision.
+- The PDF opens and prints at the correct size.
+- The DXF/SVG export preserves the line work.
+
+## Exercises
+
+1. Make a three-view drawing of the notched post from Chapter 17.
+2. Add a section through a half-lap joint and dimension the lap depth.
+3. Create a deck stair elevation with rise and run dimensions.
+4. Make a shed wall elevation with the door opening and stud spacing.
+5. Export the same page as PDF and DXF. Compare what survives.
+
+## Next
+
+You have the FreeCAD fundamentals: Part Design, parameters, and drawings. The
+next three chapters apply them to the fence, the deck, and the shed.

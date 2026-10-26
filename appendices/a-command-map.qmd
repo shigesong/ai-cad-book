@@ -1,0 +1,121 @@
+# SolidCraft Command Map
+
+Command ids are the dotted names SolidCraft uses in its command palette and in
+scripts. This is a working map of the ones used in the book, grouped by task.
+Parameters change between versions; ask the installed version for the current
+schema before scripting.
+
+```bash
+# List every command in the installed version, with one-line parameter docs
+solidcraft-cli commands
+```
+
+With an assistant connected to SolidCraft, `describe_command` gives the JSON
+schema for commands that have a typed contract.
+
+## Design and file
+
+| Command | Use |
+|---------|-----|
+| `file.new` | Start a new design |
+| `file.save` | Save the current design |
+| `file.save_as` | Save under a new name |
+| `document.units` | Change display units (`mm`, `cm`, `m`, `in`, `ft`) |
+
+Opening an existing design, saving a copy, and taking screenshots are also
+available as assistant tools; not every one is a command id.
+
+## Sketching
+
+| Command | Use |
+|---------|-----|
+| `sketch.create` | Start a sketch on a plane or face |
+| `sketch.line` | Draw connected line segments |
+| `sketch.rectangle.two_point` | Rectangle from opposite corners |
+| `sketch.rectangle.center` | Rectangle from a centre |
+| `sketch.circle.center` | Circle from centre and radius |
+| `sketch.arc.three_point` | Arc through three points |
+| `sketch.dimension` | Add a driving dimension |
+| `sketch.constraint.horizontal_vertical` | Horizontal/vertical constraint |
+| `sketch.constraint.coincident` | Join two points |
+| `sketch.constraint.parallel` | Parallel constraint |
+| `sketch.constraint.perpendicular` | Perpendicular constraint |
+| `sketch.constraint.equal` | Equal length or radius |
+| `sketch.constraint.midpoint` | Point at a midpoint |
+| `sketch.constraint.symmetry` | Symmetry constraint |
+| `sketch.toggle_driven` | Switch a dimension between driving and driven |
+| `sketch.loose_ends` | Find open ends in a sketch |
+| `sketch.finish` | Finish the sketch and return to the solid tools |
+
+The full constraint family is `sketch.constraint.*`; use `solidcraft-cli
+commands` to see the current list.
+
+## Solids
+
+| Command | Use |
+|---------|-----|
+| `solid.extrude` | Push a profile into a solid |
+| `solid.revolve` | Revolve a profile around an axis |
+| `solid.sweep` | Sweep a profile along a path |
+| `solid.loft` | Blend between profiles |
+| `solid.box` | Primitive box |
+| `solid.cylinder` | Primitive cylinder |
+| `solid.hole` | Standard hole, counterbore, or countersink |
+| `solid.fillet` | Round an edge |
+| `solid.chamfer` | Cut a flat corner |
+| `solid.combine` | Boolean union, cut, or intersect |
+| `solid.mirror` | Mirror bodies or features |
+| `solid.pattern.rectangular` | Repeat in a grid |
+| `solid.pattern.circular` | Repeat around an axis |
+| `solid.pattern.path` | Repeat along a path |
+
+## Components and assemblies
+
+| Command | Use |
+|---------|-----|
+| `component.create` | Create a component |
+| `component.from_bodies` | Turn existing bodies into a component |
+| `component.activate` | Make a component active for editing |
+| `component.copies` | Place multiple occurrences |
+| `component.capture_position` | Record an occurrence's position |
+| `assembly.bom` | Bill of materials for the assembly |
+| `joint.create` | Create an assembly joint |
+| `joint.inspect` | Inspect a joint |
+
+## Measure, check, and document
+
+| Command | Use |
+|---------|-----|
+| `inspect.measure` | Measure a body or selection |
+| `inspect.clearance` | Find near contacts and overlaps |
+| `inspect.interference` | Check for interference |
+| `inspect.section` | Cut a section through the model |
+| `view.save` | Save a named view |
+| `view.apply` | Restore a saved view |
+| `view.isometric` | Standard isometric view |
+| `file.export` | Export bodies to STEP, 3MF, STL, or OBJ |
+| `file.export_view_dxf` | Export a view to DXF |
+
+## If you drive SolidCraft from an assistant
+
+The assistant tools wrap the same operations and add a few conveniences:
+
+| Tool | Use |
+|------|-----|
+| `batch` | Run a sequence of commands as one all-or-nothing step |
+| `screenshot` | Render a PNG, optionally to a file path |
+| `inspect_design` | Read the whole design: timeline, bodies, sketches, warnings |
+| `measure` | Measure bodies or selections |
+| `body_topology` | List faces, edges, and usable selection points |
+| `set_parameter` | Change a parameter and rebuild |
+| `skill_reference` | Read SolidCraft's bundled modeling guidance |
+
+When a batch fails, it rolls back the steps it already ran. Read the failing
+step and its error before retrying; do not resend a timed-out request that is
+still running.
+
+## FreeCAD
+
+FreeCAD has no equivalent JSON command map. Its automation surface is the Python
+API, with macros, the Python console, and `freecadcmd` for headless runs. See
+Part IV for the modeling workflow and Appendix E for the MCP setup.
